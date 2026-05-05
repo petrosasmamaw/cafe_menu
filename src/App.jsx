@@ -38,7 +38,7 @@ export default function App() {
     return <Home />
   }
 
-  return <div className="min-h-screen bg-[var(--bg)] text-[var(--fg)]">{renderRoute()}</div>
+  return <div className="min-h-screen bg-[#1a1a1a] text-white">{renderRoute()}</div>
 }
 
 

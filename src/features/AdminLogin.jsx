@@ -27,27 +27,87 @@ export default function AdminLogin(){
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-50 via-pink-50 to-yellow-50 p-6">
-      <div className="absolute top-6 left-6">
-        <button onClick={() => { window.history.pushState({}, '', '/'); window.dispatchEvent(new PopStateEvent('popstate')) }} className="px-3 py-2 bg-white/80 rounded-lg shadow">Back to menu</button>
+    <div className="min-h-screen relative overflow-hidden"
+      style={{
+        background: 'linear-gradient(135deg, rgba(26, 26, 26, 0.75) 0%, rgba(26, 26, 26, 0.85) 100%), radial-gradient(circle at 30% 70%, rgba(255, 150, 80, 0.1) 0%, transparent 50%)',
+        backgroundColor: '#1a1a1a'
+      }}
+    >
+      {/* Animated background elements */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute -top-40 -left-40 w-96 h-96 rounded-full bg-[var(--accent)]/8 blur-3xl animate-pulse" />
+        <div className="absolute top-1/3 -right-40 w-80 h-80 rounded-full bg-orange-500/5 blur-3xl animate-pulse" style={{animationDelay: '1.5s'}} />
+        <div className="absolute bottom-0 left-1/4 w-96 h-96 rounded-full bg-[var(--accent)]/5 blur-3xl animate-pulse" style={{animationDelay: '2.5s'}} />
       </div>
 
-      <form onSubmit={handle} className="w-full max-w-md bg-white/60 backdrop-blur-md border border-white/40 rounded-3xl p-8 shadow-xl">
-        <div className="mb-6 text-center">
-          <h1 className="text-3xl font-extrabold bg-gradient-to-r from-purple-600 to-indigo-500 bg-clip-text text-transparent">Admin Portal</h1>
-          <p className="text-sm text-gray-600 mt-1">Sign in to manage the menu</p>
-        </div>
+      {/* Content */}
+      <div className="relative z-10 min-h-screen flex items-center justify-center p-6">
+        {/* Back button */}
+        <button 
+          onClick={() => { 
+            window.history.pushState({}, '', '/'); 
+            window.dispatchEvent(new PopStateEvent('popstate')) 
+          }} 
+          className="absolute top-8 left-8 px-4 py-2 glass text-white rounded-full font-semibold hover:bg-white/20 transition-smooth"
+        >
+          ← Back to Menu
+        </button>
 
-        {message ? <div className="mb-3 rounded-xl bg-amber-50 px-3 py-2 text-sm text-amber-800">{message}</div> : null}
-        {error?.data?.error ? <div className="mb-3 rounded-xl bg-red-50 px-3 py-2 text-sm text-red-700">{error.data.error}</div> : null}
+        {/* Form */}
+        <form onSubmit={handle} className="w-full max-w-md">
+          <div className="glass rounded-3xl p-8 backdrop-blur-xl border border-white/30">
+            {/* Header */}
+            <div className="mb-8 text-center">
+              <div className="text-5xl mb-4">☕</div>
+              <h1 className="text-3xl font-black text-white mb-2">Admin Portal</h1>
+              <p className="text-white/60 text-sm">Sign in to manage your café menu</p>
+            </div>
 
-        <input value={email} onChange={e=>setEmail(e.target.value)} placeholder="Email" className="w-full p-3 mb-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-indigo-200 outline-none" />
-        <input value={password} onChange={e=>setPassword(e.target.value)} type="password" placeholder="Password" className="w-full p-3 mb-4 rounded-xl border border-gray-200 focus:ring-2 focus:ring-indigo-200 outline-none" />
+            {/* Messages */}
+            {message ? (
+              <div className="mb-6 rounded-2xl bg-green-500/20 px-4 py-3 text-sm text-green-100 border border-green-500/30 backdrop-blur">
+                ✓ {message}
+              </div>
+            ) : null}
+            {error?.data?.error ? (
+              <div className="mb-6 rounded-2xl bg-red-500/20 px-4 py-3 text-sm text-red-100 border border-red-500/30 backdrop-blur">
+                ✗ {error.data.error}
+              </div>
+            ) : null}
 
-        <button className="w-full py-3 bg-gradient-to-r from-purple-600 to-indigo-500 text-white rounded-2xl shadow-md hover:opacity-95">{isLoading? 'Signing...':'Sign In'}</button>
+            {/* Email input */}
+            <input 
+              value={email} 
+              onChange={e=>setEmail(e.target.value)} 
+              placeholder="Email address" 
+              type="email"
+              className="w-full p-4 mb-4 bg-white/10 border border-white/20 rounded-2xl focus:ring-2 focus:ring-[var(--accent)] outline-none text-white placeholder:text-white/50 transition-smooth"
+            />
 
-        <div className="mt-4 text-center text-sm text-gray-500">Use your admin credentials to access the dashboard.</div>
-      </form>
+            {/* Password input */}
+            <input 
+              value={password} 
+              onChange={e=>setPassword(e.target.value)} 
+              type="password" 
+              placeholder="Password" 
+              className="w-full p-4 mb-6 bg-white/10 border border-white/20 rounded-2xl focus:ring-2 focus:ring-[var(--accent)] outline-none text-white placeholder:text-white/50 transition-smooth"
+            />
+
+            {/* Submit button */}
+            <button 
+              disabled={isLoading}
+              className="w-full py-3 bg-[var(--accent)] text-black font-bold rounded-2xl hover:bg-[var(--accent)]/90 disabled:opacity-50 transition-smooth shadow-lg mb-4"
+            >
+              {isLoading? '🔄 Signing in...':'Sign In'}
+            </button>
+
+            {/* Info */}
+            <p className="text-center text-sm text-white/50">
+              Use your admin credentials
+            </p>
+          </div>
+        </form>
+      </div>
     </div>
   )
 }
