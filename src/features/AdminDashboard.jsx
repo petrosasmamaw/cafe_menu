@@ -5,10 +5,10 @@ import { useGetMenuQuery, useAddMenuItemMutation, useUpdateMenuItemMutation, use
 function Modal({open,onClose,children}){
   if(!open) return null
   return (
-    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-6">
-      <div className="glass rounded-3xl p-8 w-full max-w-2xl backdrop-blur-xl border border-white/30">
+    <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 p-6">
+      <div className="glass rounded-3xl p-8 w-full max-w-2xl backdrop-blur-xl border border-white/40">
         <div className="flex justify-end mb-6">
-          <button onClick={onClose} className="px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-xl transition-smooth">✕ Close</button>
+          <button onClick={onClose} className="px-4 py-2 bg-white/30 hover:bg-white/50 text-gray-900 rounded-xl transition-smooth font-semibold">✕ Close</button>
         </div>
         {children}
       </div>
@@ -46,15 +46,15 @@ export default function AdminDashboard(){
   return (
     <div className="min-h-screen relative"
       style={{
-        background: 'linear-gradient(135deg, rgba(26, 26, 26, 0.85) 0%, rgba(26, 26, 26, 0.9) 100%), radial-gradient(circle at 20% 50%, rgba(212, 165, 116, 0.1) 0%, transparent 50%)',
-        backgroundColor: '#1a1a1a'
+        background: 'linear-gradient(135deg, #3a3a3a 0%, #2a2a2a 15%, #5a5a5a 30%, #a0a0a0 50%, #d4a574 75%, #f5f1e8 100%)',
+        backgroundColor: '#f5f1e8'
       }}
     >
       {/* Animated background elements */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute -top-40 -right-40 w-96 h-96 rounded-full bg-[var(--accent)]/8 blur-3xl animate-pulse" />
-        <div className="absolute top-1/2 -left-40 w-80 h-80 rounded-full bg-[var(--accent)]/5 blur-3xl animate-pulse" style={{animationDelay: '1s'}} />
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 rounded-full bg-green-500/5 blur-3xl animate-pulse" style={{animationDelay: '2s'}} />
+        <div className="absolute -top-40 -right-40 w-96 h-96 rounded-full bg-orange-400/10 blur-3xl animate-pulse" />
+        <div className="absolute top-1/2 -left-40 w-80 h-80 rounded-full bg-amber-400/10 blur-3xl animate-pulse" style={{animationDelay: '1s'}} />
+        <div className="absolute bottom-0 right-1/4 w-96 h-96 rounded-full bg-yellow-400/10 blur-3xl animate-pulse" style={{animationDelay: '2s'}} />
       </div>
 
       {/* Content */}
@@ -68,15 +68,15 @@ export default function AdminDashboard(){
                   window.history.pushState({}, '', '/'); 
                   window.dispatchEvent(new PopStateEvent('popstate')) 
                 }} 
-                className="px-4 py-2 glass text-white rounded-full font-semibold hover:bg-white/20 transition-smooth"
+                className="px-4 py-2 glass text-gray-900 rounded-full font-semibold hover:bg-white/40 transition-smooth"
               >
                 ← Back
               </button>
               <div>
-                <h1 className="text-3xl font-black text-white flex items-center gap-3">
+                <h1 className="text-3xl font-black text-gray-900 flex items-center gap-3">
                   <span className="text-4xl">⚙️</span> Admin Dashboard
                 </h1>
-                <p className="text-white/60 text-sm mt-1">Manage menu items, images and availability</p>
+                <p className="text-gray-700 text-sm mt-1">Manage menu items, images and availability</p>
               </div>
             </div>
             <button 
@@ -92,38 +92,38 @@ export default function AdminDashboard(){
           </div>
 
           {/* Table */}
-          <div className="glass rounded-3xl overflow-hidden backdrop-blur-xl border border-white/30">
+          <div className="glass rounded-3xl overflow-hidden backdrop-blur-xl border border-white/40">
             <div className="overflow-x-auto">
               <table className="w-full">
-                <thead className="bg-white/10 border-b border-white/20">
+                <thead className="bg-white/20 border-b border-white/30">
                   <tr>
-                    <th className="px-6 py-4 text-left text-white font-bold">Image</th>
-                    <th className="px-6 py-4 text-left text-white font-bold">Name</th>
-                    <th className="px-6 py-4 text-left text-white font-bold">Category</th>
-                    <th className="px-6 py-4 text-center text-white font-bold">Price</th>
-                    <th className="px-6 py-4 text-center text-white font-bold">Status</th>
-                    <th className="px-6 py-4 text-center text-white font-bold">Actions</th>
+                    <th className="px-6 py-4 text-left text-gray-900 font-bold">Image</th>
+                    <th className="px-6 py-4 text-left text-gray-900 font-bold">Name</th>
+                    <th className="px-6 py-4 text-left text-gray-900 font-bold">Category</th>
+                    <th className="px-6 py-4 text-center text-gray-900 font-bold">Price</th>
+                    <th className="px-6 py-4 text-center text-gray-900 font-bold">Status</th>
+                    <th className="px-6 py-4 text-center text-gray-900 font-bold">Actions</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-white/10">
+                <tbody className="divide-y divide-white/20">
                   {isLoading ? (
                     <tr>
-                      <td colSpan="6" className="px-6 py-12 text-center text-white/60">Loading...</td>
+                      <td colSpan="6" className="px-6 py-12 text-center text-gray-700">Loading...</td>
                     </tr>
                   ) : items.length === 0 ? (
                     <tr>
-                      <td colSpan="6" className="px-6 py-12 text-center text-white/60">No items yet. Add your first menu item!</td>
+                      <td colSpan="6" className="px-6 py-12 text-center text-gray-700">No items yet. Add your first menu item!</td>
                     </tr>
                   ) : items.map(it=> (
-                    <tr key={it.id} className="hover:bg-white/5 transition-smooth">
+                    <tr key={it.id} className="hover:bg-white/10 transition-smooth">
                       <td className="px-6 py-4">
-                        <div className="w-16 h-16 rounded-lg overflow-hidden bg-white/10 flex items-center justify-center">
+                        <div className="w-16 h-16 rounded-lg overflow-hidden bg-white/20 flex items-center justify-center">
                           <img src={it.image_url || 'https://via.placeholder.com/80'} alt={it.name} className="w-full h-full object-cover" />
                         </div>
                       </td>
                       <td className="px-6 py-4">
-                        <p className="font-semibold text-white">{it.name}</p>
-                        <p className="text-sm text-white/60 line-clamp-1">{it.description}</p>
+                        <p className="font-semibold text-gray-900">{it.name}</p>
+                        <p className="text-sm text-gray-700 line-clamp-1">{it.description}</p>
                       </td>
                       <td className="px-6 py-4">
                         <span className="px-3 py-1 text-xs rounded-full bg-[var(--accent)]/20 text-[var(--accent)] font-semibold">{it.category}</span>
@@ -132,7 +132,7 @@ export default function AdminDashboard(){
                         <span className="text-lg font-bold text-[var(--accent)]">${it.price}</span>
                       </td>
                       <td className="px-6 py-4 text-center">
-                        <span className={`text-xs font-bold ${it.is_available? 'text-green-400':'text-red-400'}`}>
+                        <span className={`text-xs font-bold ${it.is_available? 'text-green-700':'text-red-700'}`}>
                           {it.is_available? '✓ Available':'✗ Out'}
                         </span>
                       </td>
@@ -144,13 +144,13 @@ export default function AdminDashboard(){
                               setEditingId(it.id)
                               setOpen(true)
                             }} 
-                            className="px-3 py-1 text-sm bg-blue-500/20 hover:bg-blue-500/30 text-blue-300 rounded-lg transition-smooth"
+                            className="px-3 py-1 text-sm bg-blue-300/40 hover:bg-blue-300/60 text-blue-800 rounded-lg transition-smooth font-semibold"
                           >
                             Edit
                           </button>
                           <button 
                             onClick={()=>del(it.id)} 
-                            className="px-3 py-1 text-sm bg-red-500/20 hover:bg-red-500/30 text-red-300 rounded-lg transition-smooth"
+                            className="px-3 py-1 text-sm bg-red-300/40 hover:bg-red-300/60 text-red-800 rounded-lg transition-smooth font-semibold"
                           >
                             Delete
                           </button>
@@ -168,60 +168,60 @@ export default function AdminDashboard(){
       {/* Modal */}
       <Modal open={open} onClose={()=>{ setOpen(false); setEditingId(null); }}>
         <form onSubmit={handleSave} className="space-y-5">
-          <h2 className="text-2xl font-bold text-white mb-6">
+          <h2 className="text-2xl font-bold text-gray-900 mb-6">
             {editingId ? '✏️ Edit Item' : '✨ Add New Item'}
           </h2>
 
           <div>
-            <label className="text-sm font-semibold text-white/80 mb-2 block">Item Name</label>
+            <label className="text-sm font-semibold text-gray-800 mb-2 block">Item Name</label>
             <input 
               placeholder="e.g., Espresso Coffee" 
               value={form.name} 
               onChange={e=>setForm({...form,name:e.target.value})} 
-              className="w-full p-3 bg-white/10 border border-white/20 rounded-xl focus:ring-2 focus:ring-[var(--accent)] outline-none text-white placeholder:text-white/50 transition-smooth"
+              className="w-full p-3 bg-white/50 border border-white/60 rounded-xl focus:ring-2 focus:ring-[var(--accent)] outline-none text-gray-900 placeholder:text-gray-600 transition-smooth"
             />
           </div>
 
           <div>
-            <label className="text-sm font-semibold text-white/80 mb-2 block">Description</label>
+            <label className="text-sm font-semibold text-gray-800 mb-2 block">Description</label>
             <textarea 
               placeholder="Brief description..." 
               value={form.description} 
               onChange={e=>setForm({...form,description:e.target.value})} 
-              className="w-full p-3 bg-white/10 border border-white/20 rounded-xl focus:ring-2 focus:ring-[var(--accent)] outline-none text-white placeholder:text-white/50 transition-smooth resize-none h-20"
+              className="w-full p-3 bg-white/50 border border-white/60 rounded-xl focus:ring-2 focus:ring-[var(--accent)] outline-none text-gray-900 placeholder:text-gray-600 transition-smooth resize-none h-20"
             />
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="text-sm font-semibold text-white/80 mb-2 block">Price ($)</label>
+              <label className="text-sm font-semibold text-gray-800 mb-2 block">Price ($)</label>
               <input 
                 type="number" 
                 placeholder="5.99" 
                 value={form.price} 
                 onChange={e=>setForm({...form,price:parseFloat(e.target.value)})} 
-                className="w-full p-3 bg-white/10 border border-white/20 rounded-xl focus:ring-2 focus:ring-[var(--accent)] outline-none text-white placeholder:text-white/50 transition-smooth"
+                className="w-full p-3 bg-white/50 border border-white/60 rounded-xl focus:ring-2 focus:ring-[var(--accent)] outline-none text-gray-900 placeholder:text-gray-600 transition-smooth"
               />
             </div>
             <div>
-              <label className="text-sm font-semibold text-white/80 mb-2 block">Category</label>
+              <label className="text-sm font-semibold text-gray-800 mb-2 block">Category</label>
               <select 
                 value={form.category} 
                 onChange={e=>setForm({...form,category:e.target.value})} 
-                className="w-full p-3 bg-white/10 border border-white/20 rounded-xl focus:ring-2 focus:ring-[var(--accent)] outline-none text-white transition-smooth"
+                className="w-full p-3 bg-white/50 border border-white/60 rounded-xl focus:ring-2 focus:ring-[var(--accent)] outline-none text-gray-900 transition-smooth"
               >
-                {categories.map(c=> (<option key={c} value={c} className="bg-gray-900">{c}</option>))}
+                {categories.map(c=> (<option key={c} value={c} className="bg-gray-100">{c}</option>))}
               </select>
             </div>
           </div>
 
           <div>
-            <label className="text-sm font-semibold text-white/80 mb-2 block">Image URL</label>
+            <label className="text-sm font-semibold text-gray-800 mb-2 block">Image URL</label>
             <input 
               placeholder="https://images.unsplash.com/..." 
               value={form.image_url} 
               onChange={e=>setForm({...form,image_url:e.target.value})} 
-              className="w-full p-3 bg-white/10 border border-white/20 rounded-xl focus:ring-2 focus:ring-[var(--accent)] outline-none text-white placeholder:text-white/50 transition-smooth"
+              className="w-full p-3 bg-white/50 border border-white/60 rounded-xl focus:ring-2 focus:ring-[var(--accent)] outline-none text-gray-900 placeholder:text-gray-600 transition-smooth"
             />
             {form.image_url && (
               <div className="mt-3 rounded-xl overflow-hidden w-32 h-32">
@@ -230,7 +230,7 @@ export default function AdminDashboard(){
             )}
           </div>
 
-          <div className="flex items-center gap-3 bg-white/5 p-4 rounded-xl border border-white/10">
+          <div className="flex items-center gap-3 bg-white/30 p-4 rounded-xl border border-white/40">
             <input 
               id="available" 
               type="checkbox" 
@@ -238,14 +238,14 @@ export default function AdminDashboard(){
               onChange={e=>setForm({...form,is_available:e.target.checked})} 
               className="w-5 h-5 accent-[var(--accent)]"
             />
-            <label htmlFor="available" className="text-white font-semibold cursor-pointer">Available for sale</label>
+            <label htmlFor="available" className="text-gray-900 font-semibold cursor-pointer">Available for sale</label>
           </div>
 
           <div className="flex justify-end gap-3 pt-4">
             <button 
               type="button" 
               onClick={()=>{ setOpen(false); setEditingId(null); }} 
-              className="px-6 py-2 bg-white/10 hover:bg-white/20 text-white rounded-xl transition-smooth font-semibold"
+              className="px-6 py-2 bg-white/30 hover:bg-white/50 text-gray-900 rounded-xl transition-smooth font-semibold"
             >
               Cancel
             </button>
