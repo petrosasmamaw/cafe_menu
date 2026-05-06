@@ -66,12 +66,12 @@ export async function me(req, res) {
   if (!supa) return res.status(500).json({ user: null, error: 'Supabase not configured' })
   try {
     const token = req.cookies.token
-    if (!token) return res.json({ user: null })
+    if (!token) return res.status(401).json({ user: null })
     const { data: userData, error } = await supa.auth.getUser(token)
-    if (error) return res.status(401).json({ user: null })
+    if (error || !userData?.user) return res.status(401).json({ user: null })
     return res.json({ user: userData.user })
   } catch (err) {
     console.error(err)
-    return res.status(500).json({ user: null })
+    return res.status(401).json({ user: null })
   }
 }

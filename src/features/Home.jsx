@@ -3,18 +3,8 @@ import { useGetMenuQuery } from '../store/api/menuApi'
 
 const categories = ['All','Breakfast','Fasting Lunch','Non-Fasting Lunch','Cold Drinks','Hot Drinks','Juices','Pizza','Burger']
 
-// Background gradients - dark to light with accent color accents
-const categoryBackgrounds = {
-  'All': 'linear-gradient(135deg, #3a3a3a 0%, #2a2a2a 15%, #5a5a5a 30%, #a0a0a0 50%, #d4a574 75%, #f5f1e8 100%)',
-  'Breakfast': 'linear-gradient(135deg, #3a3a3a 0%, #2a2a2a 15%, #5a5a5a 30%, #d4a574 50%, #f5e8d4 100%)',
-  'Fasting Lunch': 'linear-gradient(135deg, #3a3a3a 0%, #2a2a2a 15%, #5a5a5a 30%, #8b6a47 50%, #f5f1e8 100%)',
-  'Non-Fasting Lunch': 'linear-gradient(135deg, #3a3a3a 0%, #2a2a2a 15%, #5a5a5a 30%, #8b6a47 50%, #f5f1e8 100%)',
-  'Cold Drinks': 'linear-gradient(135deg, #3a3a3a 0%, #2a2a2a 15%, #4a6a8a 30%, #7aa8d4 50%, #e8f0f5 100%)',
-  'Hot Drinks': 'linear-gradient(135deg, #3a3a3a 0%, #2a2a2a 15%, #6a4a3a 30%, #d4924a 50%, #f5e8d4 100%)',
-  'Juices': 'linear-gradient(135deg, #3a3a3a 0%, #2a2a2a 15%, #6a5a3a 30%, #d4c474 50%, #f5f0d4 100%)',
-  'Pizza': 'linear-gradient(135deg, #3a3a3a 0%, #2a2a2a 15%, #6a3a3a 30%, #d46a4a 50%, #f5d4c4 100%)',
-  'Burger': 'linear-gradient(135deg, #3a3a3a 0%, #2a2a2a 15%, #6a5a4a 30%, #c9926f 50%, #f5e8d4 100%)'
-}
+// Background image URL for all pages
+const bgImage = 'https://images.openai.com/static-rsc-4/6WeZC4eUWalWirG924LJPD6RR7ixBZ4-3-nfFmZvWGU4MvCsEBISmLXditOqTZpfQVEPVmGlnxb0TZyOCllRJQcPTPGq217HvV_-qCIBAUXfcwu5TCpbSvtuBw40f6MIBntYEblhaGsibQJI4W-5fvYjwgHVoSmSy6FXGiVG3bN39NDB-uxxgR0y65btrezd?purpose=fullsize'
 
 function SkeletonCard(){
   return (
@@ -83,57 +73,52 @@ export default function Home(){
     })
   },[items,q,cat])
 
-  const bgGradient = categoryBackgrounds[cat] || categoryBackgrounds['All']
-
   return (
     <div className="min-h-screen relative overflow-x-hidden"
       style={{
-        background: bgGradient,
-        backgroundColor: '#f5f1e8'
+        backgroundImage: `linear-gradient(rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.85)), url('${bgImage}')`,
+        backgroundAttachment: 'fixed',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat'
       }}
     >
-      {/* Animated background elements */}
-      <div className="fixed inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute -top-40 -right-40 w-80 h-80 rounded-full bg-orange-400/10 blur-3xl animate-pulse" />
-        <div className="absolute top-1/2 -left-40 w-80 h-80 rounded-full bg-amber-400/10 blur-3xl animate-pulse" style={{animationDelay: '1s'}} />
-        <div className="absolute bottom-0 right-1/3 w-96 h-96 rounded-full bg-yellow-400/10 blur-3xl animate-pulse" style={{animationDelay: '2s'}} />
-      </div>
       
       {/* Content */}
       <div className="relative z-10">
         {/* Header */}
-        <header className="sticky top-0 glass-dark z-20 backdrop-blur-md">
-          <div className="max-w-6xl mx-auto px-6 py-6">
-            <div className="flex items-center justify-between gap-4 mb-6">
-              <div className="flex items-center gap-3">
-                <div className="text-4xl">☕</div>
+        <header className="sticky top-0 glass-dark z-20 backdrop-blur-md max-sm:px-4">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4 sm:py-6">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4 mb-4 sm:mb-6">
+              <div className="flex items-center gap-2 sm:gap-3">
+                <div className="text-2xl sm:text-4xl">☕</div>
                 <div>
-                  <h1 className="text-3xl font-black text-gray-900">Café Menu</h1>
-                  <p className="text-sm text-gray-600">Premium selections</p>
+                  <h1 className="text-xl sm:text-3xl font-black text-gray-900">Café Menu</h1>
+                  <p className="text-xs sm:text-sm text-gray-600">Premium selections</p>
                 </div>
               </div>
-              <a href="/admin/login" className="px-6 py-2 bg-[var(--accent)] hover:bg-[var(--accent)]/90 text-white font-semibold rounded-full transition-smooth shadow-lg">Admin</a>
+              <a href="/admin/login" className="px-4 sm:px-6 py-2 bg-[var(--accent)] hover:bg-[var(--accent)]/90 text-white font-semibold rounded-full transition-smooth shadow-lg text-sm sm:text-base whitespace-nowrap">Admin</a>
             </div>
 
             {/* Search */}
-            <div className="relative mb-6">
-              <span className="absolute left-4 top-3.5 text-gray-500">🔍</span>
+            <div className="relative mb-4 sm:mb-6">
+              <span className="absolute left-3 sm:left-4 top-2.5 sm:top-3.5 text-gray-500 text-lg sm:text-base">🔍</span>
               <input 
                 value={q} 
                 onChange={e=>setQ(e.target.value)} 
                 placeholder="Search your favorite dish..." 
-                className="w-full pl-12 pr-6 py-3 glass rounded-full outline-none focus:ring-2 focus:ring-[var(--accent)]/50 text-gray-900 placeholder:text-gray-600 transition-smooth"
+                className="w-full pl-10 sm:pl-12 pr-4 sm:pr-6 py-2 sm:py-3 glass rounded-full outline-none focus:ring-2 focus:ring-[var(--accent)]/50 text-gray-900 placeholder:text-gray-600 transition-smooth text-sm sm:text-base"
               />
             </div>
 
-            {/* Category filters */}
+            {/* Category filters - mobile optimized */}
             <div className="overflow-x-auto pb-2 scrollbar-hide">
-              <div className="flex gap-2">
+              <div className="flex gap-1 sm:gap-2">
                 {categories.map(c=> (
                   <button 
                     key={c} 
                     onClick={()=>setCat(c)} 
-                    className={`whitespace-nowrap px-5 py-2 rounded-full font-semibold transition-smooth ${
+                    className={`whitespace-nowrap px-3 sm:px-5 py-1.5 sm:py-2 rounded-full font-semibold transition-smooth text-xs sm:text-sm ${
                       cat===c
                         ? 'bg-[var(--accent)] text-white shadow-lg'
                         : 'glass text-gray-900 hover:bg-white/40'
@@ -148,19 +133,19 @@ export default function Home(){
         </header>
 
         {/* Main content */}
-        <main className="max-w-6xl mx-auto px-6 py-12">
+        <main className="max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-12">
           {isLoading ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
               {Array.from({length:6}).map((_,i)=>(<SkeletonCard key={i} />))}
             </div>
           ) : filtered.length===0 ? (
-            <div className="text-center py-20">
-              <div className="text-5xl mb-4">🍽️</div>
-              <div className="text-2xl text-gray-900 font-semibold mb-2">No items found</div>
-              <p className="text-gray-600">Try a different search or category</p>
+            <div className="text-center py-12 sm:py-20">
+              <div className="text-4xl sm:text-5xl mb-3 sm:mb-4">🍽️</div>
+              <div className="text-lg sm:text-2xl text-gray-900 font-semibold mb-1 sm:mb-2">No items found</div>
+              <p className="text-sm sm:text-base text-gray-600">Try a different search or category</p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
               {filtered.map(item=> <MenuCard key={item.id} item={item} />)}
             </div>
           )}
