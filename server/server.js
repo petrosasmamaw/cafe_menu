@@ -11,7 +11,7 @@ app.use(express.json())
 app.use(cookieParser())
 const allowedOrigins = process.env.CLIENT_URLS 
   ? process.env.CLIENT_URLS.split(',').map(url => url.trim())
-  : ['http://localhost:5173', 'https://cafe-menu-ebon-seven.vercel.app']
+  : ['http://localhost:5173', 'https://cafe-menu-ten-henna.vercel.app/']
 
 const corsOptions = {
   origin: function (origin, callback) {
