@@ -3,8 +3,6 @@ import { useLoginMutation } from '../store/api/authApi'
 import { useDispatch } from 'react-redux'
 import { setUser } from '../store/slices/authSlice'
 
-const bgImage = 'https://images.openai.com/static-rsc-4/6WeZC4eUWalWirG924LJPD6RR7ixBZ4-3-nfFmZvWGU4MvCsEBISmLXditOqTZpfQVEPVmGlnxb0TZyOCllRJQcPTPGq217HvV_-qCIBAUXfcwu5TCpbSvtuBw40f6MIBntYEblhaGsibQJI4W-5fvYjwgHVoSmSy6FXGiVG3bN39NDB-uxxgR0y65btrezd?purpose=fullsize'
-
 export default function AdminLogin(){
   const [email,setEmail] = useState('')
   const [password,setPassword] = useState('')
@@ -29,82 +27,76 @@ export default function AdminLogin(){
   }
 
   return (
-    <div className="min-h-screen relative overflow-hidden"
-      style={{
-        backgroundImage: `linear-gradient(rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.85)), url('${bgImage}')`,
-        backgroundAttachment: 'fixed',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat'
-      }}
-    >
-      {/* Content */}
-      <div className="relative z-10 min-h-screen flex items-center justify-center p-4 sm:p-6">
-        {/* Back button */}
-        <button 
-          onClick={() => { 
-            window.history.pushState({}, '', '/'); 
-            window.dispatchEvent(new PopStateEvent('popstate')) 
-          }} 
-          className="absolute top-4 sm:top-8 left-4 sm:left-8 px-3 sm:px-4 py-2 glass text-gray-900 rounded-full font-semibold hover:bg-white/30 transition-smooth text-sm sm:text-base"
-        >
-          ← Back to Menu
-        </button>
+    <div className="min-h-screen bg-white flex items-center justify-center px-4">
+      <div className="w-full max-w-md bg-white border border-[#e8e4de] rounded-2xl p-8 shadow-[0_2px_12px_rgba(0,0,0,0.06)]">
+        {/* Logo */}
+        <div className="flex justify-center mb-6">
+          <div className="w-9 h-9 bg-[#6b3e26] rounded-lg flex items-center justify-center">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M17 8h1a4 4 0 1 1 0 8h-1" />
+              <path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z" />
+              <line x1="6" y1="2" x2="6" y2="4" />
+              <line x1="10" y1="2" x2="10" y2="4" />
+              <line x1="14" y1="2" x2="14" y2="4" />
+            </svg>
+          </div>
+        </div>
+
+        {/* Title */}
+        <div className="text-center mb-8">
+          <h1 className="text-lg font-medium text-[#1a1a1a] mb-1">Sign in</h1>
+          <p className="text-sm text-gray-400">Manage your café</p>
+        </div>
+
+        {/* Messages */}
+        {message && (
+          <div className="mb-6 bg-[#e6f2e8] border border-[#bce0c4] text-[#3a7a42] px-4 py-3 rounded-lg text-sm">
+            {message}
+          </div>
+        )}
+        {error?.data?.error && (
+          <div className="mb-6 bg-[#fde8e8] border border-[#f0bcbc] text-[#a32d2d] px-4 py-3 rounded-lg text-sm">
+            {error.data.error}
+          </div>
+        )}
 
         {/* Form */}
-        <form onSubmit={handle} className="w-full max-w-md">
-          <div className="glass rounded-3xl p-6 sm:p-8 backdrop-blur-xl border border-white/40">
-            {/* Header */}
-            <div className="mb-6 sm:mb-8 text-center">
-              <div className="text-4xl sm:text-5xl mb-3 sm:mb-4">☕</div>
-              <h1 className="text-2xl sm:text-3xl font-black text-gray-900 mb-1 sm:mb-2">Admin Portal</h1>
-              <p className="text-gray-700 text-sm sm:text-base">Sign in to manage your café menu</p>
-            </div>
-
-            {/* Messages */}
-            {message ? (
-              <div className="mb-4 sm:mb-6 rounded-2xl bg-green-100 px-3 sm:px-4 py-2 sm:py-3 text-xs sm:text-sm text-green-800 border border-green-300">
-                ✓ {message}
-              </div>
-            ) : null}
-            {error?.data?.error ? (
-              <div className="mb-4 sm:mb-6 rounded-2xl bg-red-100 px-3 sm:px-4 py-2 sm:py-3 text-xs sm:text-sm text-red-800 border border-red-300">
-                ✗ {error.data.error}
-              </div>
-            ) : null}
-
-            {/* Email input */}
-            <input 
-              value={email} 
-              onChange={e=>setEmail(e.target.value)} 
-              placeholder="Email address" 
+        <form onSubmit={handle} className="space-y-4">
+          <div>
+            <input
               type="email"
-              className="w-full p-3 sm:p-4 mb-3 sm:mb-4 bg-white/40 border border-white/50 rounded-2xl focus:ring-2 focus:ring-[var(--accent)] outline-none text-gray-900 placeholder:text-gray-600 transition-smooth text-sm sm:text-base"
+              value={email}
+              onChange={e=>setEmail(e.target.value)}
+              placeholder="Email address"
+              className="w-full bg-[#f5f3ef] border border-[#e8e4de] rounded-lg px-4 py-2.5 text-sm text-[#1a1a1a] placeholder-gray-400 focus:ring-2 focus:ring-[#c77e3a]/20"
+              required
             />
-
-            {/* Password input */}
-            <input 
-              value={password} 
-              onChange={e=>setPassword(e.target.value)} 
-              type="password" 
-              placeholder="Password" 
-              className="w-full p-3 sm:p-4 mb-4 sm:mb-6 bg-white/40 border border-white/50 rounded-2xl focus:ring-2 focus:ring-[var(--accent)] outline-none text-gray-900 placeholder:text-gray-600 transition-smooth text-sm sm:text-base"
-            />
-
-            {/* Submit button */}
-            <button 
-              disabled={isLoading}
-              className="w-full py-2.5 sm:py-3 bg-[var(--accent)] text-white font-bold rounded-2xl hover:bg-[var(--accent)]/90 disabled:opacity-50 transition-smooth shadow-lg mb-3 sm:mb-4 text-sm sm:text-base"
-            >
-              {isLoading? '🔄 Signing in...':'Sign In'}
-            </button>
-
-            {/* Info */}
-            <p className="text-center text-xs sm:text-sm text-gray-700">
-              Use your admin credentials
-            </p>
           </div>
+          <div>
+            <input
+              type="password"
+              value={password}
+              onChange={e=>setPassword(e.target.value)}
+              placeholder="Password"
+              className="w-full bg-[#f5f3ef] border border-[#e8e4de] rounded-lg px-4 py-2.5 text-sm text-[#1a1a1a] placeholder-gray-400 focus:ring-2 focus:ring-[#c77e3a]/20"
+              required
+            />
+          </div>
+          <button
+            type="submit"
+            disabled={isLoading}
+            className="w-full bg-[#c77e3a] text-white rounded-lg py-2.5 text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
+          >
+            {isLoading ? 'Signing in...' : 'Sign in'}
+          </button>
         </form>
+
+        {/* Back link */}
+        <div className="mt-6 text-center">
+          <a href="/" className="text-[#c77e3a] text-sm hover:opacity-80">
+            ← Back to menu
+          </a>
+        </div>
       </div>
     </div>
   )

@@ -3,37 +3,33 @@ import { useGetMenuQuery } from '../store/api/menuApi'
 
 const categories = ['All','Breakfast','Fasting Lunch','Non-Fasting Lunch','Cold Drinks','Hot Drinks','Juices','Pizza','Burger']
 
-// Background image URL for all pages
-const bgImage = 'https://images.openai.com/static-rsc-4/6WeZC4eUWalWirG924LJPD6RR7ixBZ4-3-nfFmZvWGU4MvCsEBISmLXditOqTZpfQVEPVmGlnxb0TZyOCllRJQcPTPGq217HvV_-qCIBAUXfcwu5TCpbSvtuBw40f6MIBntYEblhaGsibQJI4W-5fvYjwgHVoSmSy6FXGiVG3bN39NDB-uxxgR0y65btrezd?purpose=fullsize'
-
 function SkeletonCard(){
   return (
-    <div className="animate-pulse glass rounded-3xl p-5">
-      <div className="h-40 bg-gray-400/30 rounded-2xl mb-4" />
-      <div className="h-4 bg-gray-400/30 rounded mb-3 w-3/4" />
-      <div className="h-3 bg-gray-400/30 rounded w-1/2" />
+    <div className="animate-pulse bg-white border border-[#e8e4de] rounded-xl p-4">
+      <div className="h-24 sm:h-40 bg-[#f0ede8] rounded-lg mb-3" />
+      <div className="h-4 bg-[#f0ede8] rounded mb-2 w-3/4" />
+      <div className="h-3 bg-[#f0ede8] rounded w-1/2" />
     </div>
   )
 }
 
 function MenuCard({item}){
   return (
-    <div className="group glass rounded-3xl overflow-hidden hover:shadow-2xl transition-smooth hover:-translate-y-1">
-      <div className="relative overflow-hidden h-48">
-        <img src={item.image_url} alt={item.name} className="w-full h-full object-cover group-hover:scale-110 transition-smooth duration-500" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-smooth" />
+    <div className="bg-white border border-[#e8e4de] rounded-xl overflow-hidden shadow-subtle">
+      <div className="relative">
+        <img src={item.image_url} alt={item.name} className="w-full h-24 sm:h-40 object-cover bg-[#f0ede8]" />
+        <span className={`absolute top-2 right-2 text-[9px] sm:text-xs font-medium px-1.5 py-0.5 rounded ${
+          item.is_available ? 'bg-[#e6f2e8] text-[#3a7a42]' : 'bg-[#fde8e8] text-[#a32d2d]'
+        }`}>
+          {item.is_available ? 'Available' : 'Out'}
+        </span>
       </div>
-      <div className="p-5 bg-white/20">
-        <div className="flex justify-between items-start gap-2 mb-2">
-          <h3 className="font-bold text-lg text-gray-900 group-hover:text-[var(--accent)] transition-smooth">{item.name}</h3>
-          <span className="text-[var(--accent)] font-bold text-lg whitespace-nowrap">${item.price}</span>
-        </div>
-        <p className="text-sm text-gray-700 mb-3 line-clamp-2">{item.description}</p>
-        <div className="flex items-center justify-between pt-3 border-t border-white/30">
-          <span className="px-3 py-1 bg-white/30 rounded-full text-xs text-gray-800 font-medium">{item.category}</span>
-          <span className={`text-xs font-semibold ${item.is_available? 'text-green-700':'text-red-700'}`}>
-            {item.is_available? '✓ Available':'✗ Out'}
-          </span>
+      <div className="p-2 sm:p-3">
+        <h3 className="text-sm sm:text-base font-medium text-[#1a1a1a] truncate mb-1">{item.name}</h3>
+        <p className="text-[10px] sm:text-xs text-gray-400 line-clamp-1 sm:line-clamp-2 mb-2">{item.description}</p>
+        <div className="flex items-center justify-between">
+          <span className="text-sm sm:text-base font-medium text-[#c77e3a]">${item.price}</span>
+          <span className="bg-[#fdf3e8] text-[#a0621a] text-[9px] sm:text-xs px-2 py-0.5 rounded">{item.category}</span>
         </div>
       </div>
     </div>
@@ -74,83 +70,85 @@ export default function Home(){
   },[items,q,cat])
 
   return (
-    <div className="min-h-screen relative overflow-x-hidden"
-      style={{
-        backgroundImage: `linear-gradient(rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.85)), url('${bgImage}')`,
-        backgroundAttachment: 'fixed',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat'
-      }}
-    >
-      
-      {/* Content */}
-      <div className="relative z-10">
-        {/* Header */}
-        <header className="sticky top-0 glass-dark z-20 backdrop-blur-md max-sm:px-4">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4 sm:py-6">
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4 mb-4 sm:mb-6">
-              <div className="flex items-center gap-2 sm:gap-3">
-                <div className="text-2xl sm:text-4xl">☕</div>
-                <div>
-                  <h1 className="text-xl sm:text-3xl font-black text-gray-900">Café Menu</h1>
-                  <p className="text-xs sm:text-sm text-gray-600">Premium selections</p>
-                </div>
+    <div className="min-h-screen bg-[#fafaf8]">
+      {/* Sticky Header */}
+      <header className="sticky top-0 z-50 bg-white border-b border-[#e8e4de]">
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 py-3">
+          {/* Top row: logo, title, admin button */}
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center gap-2.5">
+              <div className="w-8 h-8 sm:w-9 sm:h-9 bg-[#6b3e26] rounded-lg flex items-center justify-center flex-shrink-0">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M17 8h1a4 4 0 1 1 0 8h-1" />
+                  <path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z" />
+                  <line x1="6" y1="2" x2="6" y2="4" />
+                  <line x1="10" y1="2" x2="10" y2="4" />
+                  <line x1="14" y1="2" x2="14" y2="4" />
+                </svg>
               </div>
-              <a href="/admin/login" className="px-4 sm:px-6 py-2 bg-[var(--accent)] hover:bg-[var(--accent)]/90 text-white font-semibold rounded-full transition-smooth shadow-lg text-sm sm:text-base whitespace-nowrap">Admin</a>
-            </div>
-
-            {/* Search */}
-            <div className="relative mb-4 sm:mb-6">
-              <span className="absolute left-3 sm:left-4 top-2.5 sm:top-3.5 text-gray-500 text-lg sm:text-base">🔍</span>
-              <input 
-                value={q} 
-                onChange={e=>setQ(e.target.value)} 
-                placeholder="Search your favorite dish..." 
-                className="w-full pl-10 sm:pl-12 pr-4 sm:pr-6 py-2 sm:py-3 glass rounded-full outline-none focus:ring-2 focus:ring-[var(--accent)]/50 text-gray-900 placeholder:text-gray-600 transition-smooth text-sm sm:text-base"
-              />
-            </div>
-
-            {/* Category filters - mobile optimized */}
-            <div className="overflow-x-auto pb-2 scrollbar-hide">
-              <div className="flex gap-1 sm:gap-2">
-                {categories.map(c=> (
-                  <button 
-                    key={c} 
-                    onClick={()=>setCat(c)} 
-                    className={`whitespace-nowrap px-3 sm:px-5 py-1.5 sm:py-2 rounded-full font-semibold transition-smooth text-xs sm:text-sm ${
-                      cat===c
-                        ? 'bg-[var(--accent)] text-white shadow-lg'
-                        : 'glass text-gray-900 hover:bg-white/40'
-                    }`}
-                  >
-                    {c}
-                  </button>
-                ))}
+              <div>
+                <h1 className="text-base sm:text-lg font-medium text-[#1a1a1a] leading-tight">Café Menu</h1>
+                <p className="text-[10px] sm:text-xs text-gray-400 leading-tight">Premium selections</p>
               </div>
             </div>
+            <a
+              href="/admin"
+              className="border border-[#c77e3a] text-[#c77e3a] bg-[#fff9f2] px-3.5 py-1.5 rounded-full text-xs font-medium hover:opacity-90 transition-opacity flex-shrink-0"
+            >
+              Admin
+            </a>
           </div>
-        </header>
 
-        {/* Main content */}
-        <main className="max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-12">
-          {isLoading ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-              {Array.from({length:6}).map((_,i)=>(<SkeletonCard key={i} />))}
-            </div>
-          ) : filtered.length===0 ? (
-            <div className="text-center py-12 sm:py-20">
-              <div className="text-4xl sm:text-5xl mb-3 sm:mb-4">🍽️</div>
-              <div className="text-lg sm:text-2xl text-gray-900 font-semibold mb-1 sm:mb-2">No items found</div>
-              <p className="text-sm sm:text-base text-gray-600">Try a different search or category</p>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-              {filtered.map(item=> <MenuCard key={item.id} item={item} />)}
-            </div>
-          )}
-        </main>
-      </div>
+          {/* Search bar */}
+          <div className="relative mb-3">
+            <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+              <circle cx="11" cy="11" r="8" />
+              <path d="m21 21-4.35-4.35" />
+            </svg>
+            <input
+              type="text"
+              placeholder="Search dishes..."
+              value={q}
+              onChange={e=>setQ(e.target.value)}
+              className="w-full bg-[#f5f3ef] rounded-lg pl-9 pr-4 py-2.5 text-sm text-[#1a1a1a] placeholder-gray-400 border-0 focus:ring-2 focus:ring-[#c77e3a]/20"
+            />
+          </div>
+
+          {/* Category chips */}
+          <div className="flex gap-2 overflow-x-auto no-scrollbar pb-1">
+            {categories.map(c => (
+              <button
+                key={c}
+                onClick={()=>setCat(c)}
+                className={`px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap transition-colors ${
+                  cat === c
+                    ? 'bg-[#c77e3a] text-white'
+                    : 'bg-[#f0ede8] text-[#7a6a5a]'
+                }`}
+              >
+                {c}
+              </button>
+            ))}
+          </div>
+        </div>
+      </header>
+
+      {/* Menu Grid */}
+      <main className="max-w-7xl mx-auto px-3 sm:px-6 py-3 sm:py-6">
+        {isLoading ? (
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 sm:gap-4">
+            {Array.from({length:6}).map((_,i)=> <SkeletonCard key={i} />)}
+          </div>
+        ) : filtered.length===0 ? (
+          <div className="text-center py-12">
+            <p className="text-gray-400 text-sm">No items found</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 sm:gap-4">
+            {filtered.map(item=> <MenuCard key={item.id} item={item} />)}
+          </div>
+        )}
+      </main>
     </div>
   )
 }

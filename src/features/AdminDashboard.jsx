@@ -2,15 +2,19 @@ import React, { useState } from 'react'
 const categories = ['Breakfast','Fasting Lunch','Non-Fasting Lunch','Cold Drinks','Hot Drinks','Juices','Pizza','Burger']
 import { useGetMenuQuery, useAddMenuItemMutation, useUpdateMenuItemMutation, useDeleteMenuItemMutation } from '../store/api/menuApi'
 
-const bgImage = 'https://images.openai.com/static-rsc-4/6WeZC4eUWalWirG924LJPD6RR7ixBZ4-3-nfFmZvWGU4MvCsEBISmLXditOqTZpfQVEPVmGlnxb0TZyOCllRJQcPTPGq217HvV_-qCIBAUXfcwu5TCpbSvtuBw40f6MIBntYEblhaGsibQJI4W-5fvYjwgHVoSmSy6FXGiVG3bN39NDB-uxxgR0y65btrezd?purpose=fullsize'
-
 function Modal({open,onClose,children}){
   if(!open) return null
   return (
-    <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 p-4 sm:p-6">
-      <div className="glass rounded-3xl p-6 sm:p-8 w-full max-w-2xl backdrop-blur-xl border border-white/40 max-h-[90vh] overflow-y-auto">
-        <div className="flex justify-end mb-4 sm:mb-6">
-          <button onClick={onClose} className="px-3 sm:px-4 py-2 bg-white/30 hover:bg-white/50 text-gray-900 rounded-xl transition-smooth font-semibold text-sm sm:text-base">✕ Close</button>
+    <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
+      <div className="absolute inset-0 bg-black/35" onClick={onClose} />
+      <div className="relative bg-white rounded-2xl w-full max-w-lg border border-[#e8e4de] p-6 sm:p-8 max-h-[90vh] overflow-y-auto">
+        <div className="flex justify-end mb-4">
+          <button onClick={onClose} className="text-gray-400 text-sm hover:text-[#1a1a1a] transition-colors flex items-center gap-1">
+            <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+              <path d="M18 6L6 18M6 6l12 12" />
+            </svg>
+            Close
+          </button>
         </div>
         {children}
       </div>
@@ -46,36 +50,22 @@ export default function AdminDashboard(){
   }
 
   return (
-    <div className="min-h-screen relative"
-      style={{
-        backgroundImage: `linear-gradient(rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.85)), url('${bgImage}')`,
-        backgroundAttachment: 'fixed',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat'
-      }}
-    >
-      {/* Content */}
-      <div className="relative z-10 p-4 sm:p-6 md:p-8">
-        <div className="max-w-7xl mx-auto">
-          {/* Header */}
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-6 mb-6 sm:mb-8">
-            <div className="flex items-center gap-3 sm:gap-4 flex-wrap">
-              <button 
-                onClick={() => { 
-                  window.history.pushState({}, '', '/'); 
-                  window.dispatchEvent(new PopStateEvent('popstate')) 
-                }} 
-                className="px-3 sm:px-4 py-2 glass text-gray-900 rounded-full font-semibold hover:bg-white/40 transition-smooth text-sm sm:text-base"
+    <div className="min-h-screen bg-[#fafaf8]">
+      {/* Header */}
+      <header className="bg-white border-b border-[#e8e4de] sticky top-0 z-40">
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 py-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <a
+                href="/"
+                className="text-[#6b3e26] text-sm hover:opacity-80 flex items-center gap-1"
               >
-                ← Back
-              </button>
-              <div>
-                <h1 className="text-xl sm:text-3xl font-black text-gray-900 flex items-center gap-2 sm:gap-3">
-                  <span className="text-3xl sm:text-4xl">⚙️</span> <span className="hidden sm:inline">Admin Dashboard</span><span className="sm:hidden">Admin</span>
-                </h1>
-                <p className="text-gray-700 text-xs sm:text-sm mt-1">Manage menu items, images and availability</p>
-              </div>
+                <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                  <path d="M19 12H5M12 19l-7-7 7-7" />
+                </svg>
+                Back
+              </a>
+              <h1 className="text-lg sm:text-xl font-medium text-[#1a1a1a]">Admin Dashboard</h1>
             </div>
             <button 
               onClick={()=>{ 
@@ -83,153 +73,186 @@ export default function AdminDashboard(){
                 setEditingId(null)
                 setOpen(true)
               }} 
-              className="px-4 sm:px-6 py-2 sm:py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white font-bold rounded-2xl hover:opacity-90 transition-smooth shadow-lg whitespace-nowrap text-sm sm:text-base"
+              className="bg-[#c77e3a] text-white rounded-lg px-4 py-2 text-sm font-medium hover:opacity-90 transition-opacity flex items-center gap-1.5"
             >
-              + Add Item
+              <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                <path d="M12 5v14M5 12h14" />
+              </svg>
+              Add Item
             </button>
           </div>
+        </div>
+      </header>
 
-          {/* Items Container */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-            {isLoading ? (
-              <div className="col-span-full text-center py-12 text-gray-700">Loading...</div>
-            ) : items.length === 0 ? (
-              <div className="col-span-full text-center py-12 text-gray-700">No items yet. Add your first menu item!</div>
-            ) : items.map(it=> (
-              <div key={it.id} className="glass rounded-2xl p-4 sm:p-6 backdrop-blur-xl border border-white/40 hover:border-white/60 transition-smooth group">
-                {/* Item Image */}
-                <div className="w-full h-40 sm:h-48 rounded-xl overflow-hidden bg-white/20 flex items-center justify-center mb-4">
-                  <img src={it.image_url || 'https://via.placeholder.com/200'} alt={it.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform" />
+      {/* Main content */}
+      <main className="max-w-7xl mx-auto px-3 sm:px-6 py-4 sm:py-6">
+        {isLoading && !items.length ? (
+          <div className="text-center py-12">
+            <p className="text-gray-400 text-sm">Loading...</p>
+          </div>
+        ) : items.length === 0 ? (
+          <div className="text-center py-12">
+            <p className="text-gray-400 text-sm mb-4">No menu items yet</p>
+            <button
+              onClick={() => setOpen(true)}
+              className="bg-[#c77e3a] text-white rounded-lg px-6 py-2.5 text-sm font-medium hover:opacity-90 transition-opacity"
+            >
+              Add your first item
+            </button>
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 sm:gap-4">
+            {items.map(it => (
+              <div key={it.id} className="bg-white border border-[#e8e4de] rounded-xl overflow-hidden shadow-subtle">
+                {/* Image */}
+                <div className="relative">
+                  <img src={it.image_url || 'https://via.placeholder.com/200'} alt={it.name} className="w-full h-24 sm:h-32 object-cover bg-[#f0ede8] rounded-t-xl" />
                 </div>
-                
-                {/* Item Info */}
-                <div className="mb-4">
-                  <div className="flex justify-between items-start gap-2 mb-2">
-                    <h3 className="font-bold text-gray-900 text-base sm:text-lg leading-tight">{it.name}</h3>
-                    <span className={`text-xs sm:text-sm font-bold whitespace-nowrap ${it.is_available? 'text-green-700':'text-red-700'}`}>
-                      {it.is_available? '✓ In':'✗ Out'}
+
+                {/* Content */}
+                <div className="p-2.5 sm:p-3">
+                  <h3 className="text-sm sm:text-base font-medium text-[#1a1a1a] truncate mb-2">
+                    {it.name}
+                  </h3>
+                  
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-sm sm:text-base font-medium text-[#c77e3a]">
+                      ${it.price}
+                    </span>
+                    <span className="bg-[#fdf3e8] text-[#a0621a] text-[9px] sm:text-xs px-2 py-0.5 rounded">
+                      {it.category}
                     </span>
                   </div>
-                  <p className="text-xs sm:text-sm text-gray-700 line-clamp-2 mb-2">{it.description}</p>
-                  <div className="flex justify-between items-center">
-                    <span className="px-3 py-1 text-xs rounded-full bg-[var(--accent)]/20 text-[var(--accent)] font-semibold">{it.category}</span>
-                    <span className="text-lg sm:text-xl font-bold text-[var(--accent)]">${it.price}</span>
+
+                  <div className="flex items-center justify-between">
+                    <span className={`text-[10px] sm:text-xs ${
+                      it.is_available ? 'text-[#3a7a42]' : 'text-[#a32d2d]'
+                    }`}>
+                      {it.is_available ? '● Available' : '● Out of stock'}
+                    </span>
+                    <div className="flex gap-1.5">
+                      <button 
+                        onClick={()=>{ 
+                          setForm({name:it.name, description:it.description||'', price:it.price, category:it.category||'Breakfast', image_url:it.image_url||'', is_available:!!it.is_available})
+                          setEditingId(it.id)
+                          setOpen(true)
+                        }} 
+                        className="bg-[#e8f0fb] text-[#2563b8] rounded px-2 py-1 text-[10px] sm:text-xs font-medium hover:opacity-90 transition-opacity"
+                      >
+                        Edit
+                      </button>
+                      <button 
+                        onClick={()=>del(it.id)} 
+                        className="bg-[#fbe8e8] text-[#b82525] rounded px-2 py-1 text-[10px] sm:text-xs font-medium hover:opacity-90 transition-opacity"
+                      >
+                        Delete
+                      </button>
+                    </div>
                   </div>
-                </div>
-                
-                {/* Actions */}
-                <div className="flex gap-2 flex-col sm:flex-row">
-                  <button 
-                    onClick={()=>{ 
-                      setForm({name:it.name, description:it.description||'', price:it.price, category:it.category||'Breakfast', image_url:it.image_url||'', is_available:!!it.is_available})
-                      setEditingId(it.id)
-                      setOpen(true)
-                    }} 
-                    className="flex-1 px-3 py-2 text-xs sm:text-sm bg-blue-300/40 hover:bg-blue-300/60 text-blue-800 rounded-lg transition-smooth font-semibold"
-                  >
-                    ✏️ Edit
-                  </button>
-                  <button 
-                    onClick={()=>del(it.id)} 
-                    className="flex-1 px-3 py-2 text-xs sm:text-sm bg-red-300/40 hover:bg-red-300/60 text-red-800 rounded-lg transition-smooth font-semibold"
-                  >
-                    🗑️ Delete
-                  </button>
                 </div>
               </div>
             ))}
           </div>
-        </div>
-      </div>
+        )}
+      </main>
 
       {/* Modal */}
       <Modal open={open} onClose={()=>{ setOpen(false); setEditingId(null); }}>
-        <form onSubmit={handleSave} className="space-y-4 sm:space-y-5">
-          <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4 sm:mb-6">
-            {editingId ? '✏️ Edit Item' : '✨ Add New Item'}
+        <form onSubmit={handleSave} className="space-y-4">
+          <h2 className="text-lg font-medium text-[#1a1a1a] mb-6">
+            {editingId ? 'Edit Menu Item' : 'Add New Item'}
           </h2>
 
           <div>
-            <label className="text-xs sm:text-sm font-semibold text-gray-800 mb-2 block">Item Name</label>
+            <label className="block text-sm font-medium text-[#1a1a1a] mb-1.5">Item Name</label>
             <input 
               placeholder="e.g., Espresso Coffee" 
               value={form.name} 
               onChange={e=>setForm({...form,name:e.target.value})} 
-              className="w-full p-2 sm:p-3 bg-white/50 border border-white/60 rounded-xl focus:ring-2 focus:ring-[var(--accent)] outline-none text-gray-900 placeholder:text-gray-600 transition-smooth text-sm sm:text-base"
+              className="w-full bg-[#f5f3ef] border border-[#e8e4de] rounded-lg px-4 py-2.5 text-sm text-[#1a1a1a] placeholder-gray-400 focus:ring-2 focus:ring-[#c77e3a]/20"
+              required
             />
           </div>
 
           <div>
-            <label className="text-xs sm:text-sm font-semibold text-gray-800 mb-2 block">Description</label>
+            <label className="block text-sm font-medium text-[#1a1a1a] mb-1.5">Description</label>
             <textarea 
               placeholder="Brief description..." 
               value={form.description} 
               onChange={e=>setForm({...form,description:e.target.value})} 
-              className="w-full p-2 sm:p-3 bg-white/50 border border-white/60 rounded-xl focus:ring-2 focus:ring-[var(--accent)] outline-none text-gray-900 placeholder:text-gray-600 transition-smooth resize-none h-20 text-sm sm:text-base"
+              className="w-full bg-[#f5f3ef] border border-[#e8e4de] rounded-lg px-4 py-2.5 text-sm text-[#1a1a1a] placeholder-gray-400 focus:ring-2 focus:ring-[#c77e3a]/20 resize-none"
+              rows="3"
             />
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+          <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="text-xs sm:text-sm font-semibold text-gray-800 mb-2 block">Price ($)</label>
+              <label className="block text-sm font-medium text-[#1a1a1a] mb-1.5">Price ($)</label>
               <input 
                 type="number" 
+                step="0.01"
+                min="0"
                 placeholder="5.99" 
                 value={form.price} 
                 onChange={e=>setForm({...form,price:parseFloat(e.target.value)})} 
-                className="w-full p-2 sm:p-3 bg-white/50 border border-white/60 rounded-xl focus:ring-2 focus:ring-[var(--accent)] outline-none text-gray-900 placeholder:text-gray-600 transition-smooth text-sm sm:text-base"
+                className="w-full bg-[#f5f3ef] border border-[#e8e4de] rounded-lg px-4 py-2.5 text-sm text-[#1a1a1a] placeholder-gray-400 focus:ring-2 focus:ring-[#c77e3a]/20"
+                required
               />
             </div>
             <div>
-              <label className="text-xs sm:text-sm font-semibold text-gray-800 mb-2 block">Category</label>
+              <label className="block text-sm font-medium text-[#1a1a1a] mb-1.5">Category</label>
               <select 
                 value={form.category} 
                 onChange={e=>setForm({...form,category:e.target.value})} 
-                className="w-full p-2 sm:p-3 bg-white/50 border border-white/60 rounded-xl focus:ring-2 focus:ring-[var(--accent)] outline-none text-gray-900 transition-smooth text-sm sm:text-base"
+                className="w-full bg-[#f5f3ef] border border-[#e8e4de] rounded-lg px-4 py-2.5 text-sm text-[#1a1a1a] focus:ring-2 focus:ring-[#c77e3a]/20"
               >
-                {categories.map(c=> (<option key={c} value={c} className="bg-gray-100">{c}</option>))}
+                {categories.map(c=> (<option key={c} value={c} className="bg-white">{c}</option>))}
               </select>
             </div>
           </div>
 
           <div>
-            <label className="text-xs sm:text-sm font-semibold text-gray-800 mb-2 block">Image URL</label>
+            <label className="block text-sm font-medium text-[#1a1a1a] mb-1.5">Image URL</label>
             <input 
+              type="url"
               placeholder="https://images.unsplash.com/..." 
               value={form.image_url} 
               onChange={e=>setForm({...form,image_url:e.target.value})} 
-              className="w-full p-2 sm:p-3 bg-white/50 border border-white/60 rounded-xl focus:ring-2 focus:ring-[var(--accent)] outline-none text-gray-900 placeholder:text-gray-600 transition-smooth text-sm sm:text-base"
+              className="w-full bg-[#f5f3ef] border border-[#e8e4de] rounded-lg px-4 py-2.5 text-sm text-[#1a1a1a] placeholder-gray-400 focus:ring-2 focus:ring-[#c77e3a]/20"
             />
             {form.image_url && (
-              <div className="mt-3 rounded-xl overflow-hidden w-32 h-32">
+              <div className="mt-3 rounded-lg overflow-hidden w-32 h-32 border border-[#e8e4de]">
                 <img src={form.image_url} alt="Preview" className="w-full h-full object-cover" />
               </div>
             )}
           </div>
 
-          <div className="flex items-center gap-3 bg-white/30 p-3 sm:p-4 rounded-xl border border-white/40">
-            <input 
-              id="available" 
-              type="checkbox" 
-              checked={form.is_available} 
-              onChange={e=>setForm({...form,is_available:e.target.checked})} 
-              className="w-5 h-5 accent-[var(--accent)]"
-            />
-            <label htmlFor="available" className="text-gray-900 font-semibold cursor-pointer text-sm sm:text-base">Available for sale</label>
+          <div>
+            <label className="flex items-center gap-3 cursor-pointer">
+              <input 
+                id="available" 
+                type="checkbox" 
+                checked={form.is_available} 
+                onChange={e=>setForm({...form,is_available:e.target.checked})} 
+                className="w-4 h-4 rounded border-gray-300 text-[#c77e3a] focus:ring-[#c77e3a]/20"
+              />
+              <span className="text-sm text-[#1a1a1a]">Available for sale</span>
+            </label>
           </div>
 
-          <div className="flex flex-col-reverse sm:flex-row justify-end gap-3 pt-4">
+          <div className="flex gap-3 pt-4">
             <button 
               type="button" 
               onClick={()=>{ setOpen(false); setEditingId(null); }} 
-              className="px-4 sm:px-6 py-2 bg-white/30 hover:bg-white/50 text-gray-900 rounded-xl transition-smooth font-semibold text-sm sm:text-base"
+              className="flex-1 bg-[#f0ede8] text-[#6b3e26] rounded-lg py-2.5 text-sm font-medium hover:opacity-90 transition-opacity"
             >
               Cancel
             </button>
             <button 
-              className="px-4 sm:px-6 py-2 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl hover:opacity-90 transition-smooth font-bold text-sm sm:text-base"
+              type="submit"
+              className="flex-1 bg-[#c77e3a] text-white rounded-lg py-2.5 text-sm font-medium hover:opacity-90 transition-opacity"
             >
-              {editingId? '✓ Update Item' : '✨ Add Item'}
+              {editingId ? 'Save Changes' : 'Add Item'}
             </button>
           </div>
         </form>
