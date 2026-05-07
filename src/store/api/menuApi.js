@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
-const apiBase = import.meta.env.VITE_API_BASE || 'http://localhost:4002/api'
+const rawApiBase = import.meta.env.VITE_API_BASE || 'http://localhost:4002/api'
+const apiBase = rawApiBase.endsWith('/api') ? rawApiBase : rawApiBase.replace(/\/$/, '') + '/api'
 
 export const menuApi = createApi({
   reducerPath: 'menuApi',
