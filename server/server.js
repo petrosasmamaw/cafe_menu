@@ -9,7 +9,11 @@ import { verifyDatabaseConnection, ensureMenuTable } from './config/db.js'
 const app = express()
 app.use(express.json())
 app.use(cookieParser())
-const allowedOrigins = ['http://localhost:5273', 'https://cafe-menu-sable.vercel.app']
+const allowedOrigins = [
+  'http://localhost:5173',
+  'http://localhost:5273',
+  'https://cafe-menu-sable.vercel.app',
+]
 
 const corsOptions = {
   origin: function (origin, callback) {
