@@ -87,7 +87,7 @@ export default function Home(){
                 </svg>
               </div>
               <div>
-                <h1 className="text-base sm:text-lg font-medium text-[#1a1a1a] leading-tight">Café Menu</h1>
+                <h1 className="text-base sm:text-lg font-medium text-[#1a1a1a] leading-tight">LOL Café Menu</h1>
                 <p className="text-[10px] sm:text-xs text-gray-400 leading-tight">Premium selections</p>
               </div>
             </div>

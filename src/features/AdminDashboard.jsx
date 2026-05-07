@@ -88,7 +88,7 @@ export default function AdminDashboard(){
                 </svg>
                 Back
               </a>
-              <h1 className="text-lg sm:text-xl font-medium text-[#1a1a1a]">Admin Dashboard</h1>
+              <h1 className="text-lg sm:text-xl font-medium text-[#1a1a1a]"> LOL Admin Dashboard</h1>
             </div>
             <button 
               onClick={()=>{ 
