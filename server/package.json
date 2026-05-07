@@ -5,8 +5,7 @@
   "private": true,
   "scripts": {
     "start": "node server.js",
-    "dev": "nodemon server.js",
-    "build": "echo \"No build step for server; start with `npm run start`\""
+    "dev": "nodemon server.js"
   },
   "dependencies": {
     "cookie-parser": "^1.4.6",
