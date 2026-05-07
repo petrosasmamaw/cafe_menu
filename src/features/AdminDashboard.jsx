@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-const categories = ['Breakfast','Fasting Lunch','Non-Fasting Lunch','Cold Drinks','Hot Drinks','Juices','Pizza','Burger']
+import React, { useState, useMemo } from 'react'
+const categories = ['All','Breakfast','Fasting Lunch','Non-Fasting Lunch','Cold Drinks','Hot Drinks','Juices','Pizza','Burger']
 import { useGetMenuQuery, useAddMenuItemMutation, useUpdateMenuItemMutation, useDeleteMenuItemMutation } from '../store/api/menuApi'
 
 function Modal({open,onClose,children}){
@@ -32,6 +32,7 @@ export default function AdminDashboard(){
   const [open,setOpen] = useState(false)
   const [form,setForm] = useState({name:'',description:'',price:0,category:'Breakfast',image_url:'',is_available:true})
   const [editingId, setEditingId] = useState(null)
+  const [cat, setCat] = useState('All')
 
   async function handleSave(e){
     e.preventDefault()
@@ -48,6 +49,28 @@ export default function AdminDashboard(){
       console.error('Save failed', err)
     }
   }
+
+  function normalize(str){
+    return String(str || '').toLowerCase().replace(/-/g,' ').replace(/\s+/g,' ').trim()
+  }
+
+  function matchesCategory(itemCategory, selectedCategory){
+    const normItem = normalize(itemCategory)
+    const normSel = normalize(selectedCategory)
+    if(normSel === 'all') return true
+    const selTokens = normSel.split(' ').filter(Boolean)
+    return selTokens.every(tok => {
+      if(!tok) return true
+      if(normItem.includes(tok)) return true
+      if(tok.endsWith('s') && normItem.includes(tok.slice(0,-1))) return true
+      if(tok.endsWith('ing') && normItem.includes(tok.replace(/ing$/,''))) return true
+      return false
+    })
+  }
+
+  const filteredItems = useMemo(()=>{
+    return items.filter(i => matchesCategory(i.category, cat))
+  }, [items, cat])
 
   return (
     <div className="min-h-screen bg-[#fafaf8]">
@@ -86,23 +109,34 @@ export default function AdminDashboard(){
 
       {/* Main content */}
       <main className="max-w-7xl mx-auto px-3 sm:px-6 py-4 sm:py-6">
+        {/* Category filter chips */}
+        <div className="flex gap-2 overflow-x-auto no-scrollbar mb-4 pb-1">
+          {categories.map(c => (
+            <button
+              key={c}
+              onClick={()=>setCat(c)}
+              className={`px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap transition-colors ${
+                cat === c
+                  ? 'bg-[#c77e3a] text-white'
+                  : 'bg-[#f0ede8] text-[#7a6a5a]'
+              }`}
+            >
+              {c}
+            </button>
+          ))}
+        </div>
+
         {isLoading && !items.length ? (
           <div className="text-center py-12">
             <p className="text-gray-400 text-sm">Loading...</p>
           </div>
-        ) : items.length === 0 ? (
+        ) : filteredItems.length === 0 ? (
           <div className="text-center py-12">
-            <p className="text-gray-400 text-sm mb-4">No menu items yet</p>
-            <button
-              onClick={() => setOpen(true)}
-              className="bg-[#c77e3a] text-white rounded-lg px-6 py-2.5 text-sm font-medium hover:opacity-90 transition-opacity"
-            >
-              Add your first item
-            </button>
+            <p className="text-gray-400 text-sm mb-4">No menu items found</p>
           </div>
         ) : (
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 sm:gap-4">
-            {items.map(it => (
+            {filteredItems.map(it => (
               <div key={it.id} className="bg-white border border-[#e8e4de] rounded-xl overflow-hidden shadow-subtle">
                 {/* Image */}
                 <div className="relative">
