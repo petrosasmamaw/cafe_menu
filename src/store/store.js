@@ -3,15 +3,17 @@ import { setupListeners } from '@reduxjs/toolkit/query'
 import authReducer from './slices/authSlice'
 import { menuApi } from './api/menuApi'
 import { authApi } from './api/authApi'
+import { commentsApi } from './api/commentsApi'
 
 const store = configureStore({
   reducer: {
     auth: authReducer,
     [menuApi.reducerPath]: menuApi.reducer,
     [authApi.reducerPath]: authApi.reducer,
+    [commentsApi.reducerPath]: commentsApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(menuApi.middleware, authApi.middleware),
+    getDefaultMiddleware().concat(menuApi.middleware, authApi.middleware, commentsApi.middleware),
 })
 
 setupListeners(store.dispatch)

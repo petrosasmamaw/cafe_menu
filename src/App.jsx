@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Home from './features/Home'
 import AdminLogin from './features/AdminLogin'
 import AdminDashboard from './features/AdminDashboard'
+import AdminComments from './features/AdminComments'
 import { useGetMeQuery } from './store/api/authApi'
 import { useDispatch, useSelector } from 'react-redux'
 import { setUser } from './store/slices/authSlice'
@@ -33,6 +34,13 @@ export default function App() {
       return (
         <PrivateRoute>
           <AdminDashboard />
+        </PrivateRoute>
+      )
+    }
+    if (path === '/admin/comments') {
+      return (
+        <PrivateRoute>
+          <AdminComments />
         </PrivateRoute>
       )
     }

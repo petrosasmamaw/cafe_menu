@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from 'react'
 import { useGetMenuQuery } from '../store/api/menuApi'
+import { useAddCommentMutation } from '../store/api/commentsApi'
 
 const categories = ['All','Breakfast','Fasting Lunch','Non-Fasting Lunch','Cold Drinks','Hot Drinks','Juices','Pizza','Burger']
 
@@ -38,6 +39,9 @@ function MenuCard({item}){
 
 export default function Home(){
   const { data, isLoading } = useGetMenuQuery()
+  const [addComment] = useAddCommentMutation()
+  const [commentOpen, setCommentOpen] = useState(false)
+  const [commentForm, setCommentForm] = useState({ name: '', comment: '' })
   const [q,setQ] = useState('')
   const [cat,setCat] = useState('All')
 
@@ -91,12 +95,20 @@ export default function Home(){
                 <p className="text-[10px] sm:text-xs text-gray-400 leading-tight">Premium selections</p>
               </div>
             </div>
-            <a
-              href="/admin"
-              className="border border-[#c77e3a] text-[#c77e3a] bg-[#fff9f2] px-3.5 py-1.5 rounded-full text-xs font-medium hover:opacity-90 transition-opacity flex-shrink-0"
-            >
-              Admin
-            </a>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => setCommentOpen(true)}
+                className="border border-[#6b7280] text-[#374151] bg-white px-3 py-1.5 rounded-full text-xs font-medium hover:opacity-90 transition-opacity"
+              >
+                Comment
+              </button>
+              <a
+                href="/admin"
+                className="border border-[#c77e3a] text-[#c77e3a] bg-[#fff9f2] px-3.5 py-1.5 rounded-full text-xs font-medium hover:opacity-90 transition-opacity flex-shrink-0"
+              >
+                Admin
+              </a>
+            </div>
           </div>
 
           {/* Search bar */}
@@ -132,6 +144,55 @@ export default function Home(){
           </div>
         </div>
       </header>
+
+      {/* Comment Modal */}
+      {commentOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
+          <div className="absolute inset-0 bg-black/40" onClick={() => setCommentOpen(false)} />
+          <div className="relative bg-white rounded-2xl w-full max-w-lg border border-[#e8e4de] p-6 sm:p-8 max-h-[90vh] overflow-y-auto">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-lg font-medium text-[#1a1a1a]">Send a comment</h2>
+              <button onClick={() => setCommentOpen(false)} className="text-gray-400">Close</button>
+            </div>
+            <form onSubmit={async (e) => {
+              e.preventDefault()
+              try {
+                await addComment(commentForm).unwrap()
+                setCommentForm({ name: '', comment: '' })
+                setCommentOpen(false)
+                alert('Thanks — your comment was submitted!')
+              } catch (err) {
+                console.error('Comment submit error', err)
+                alert('Failed to submit comment')
+              }
+            }} className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-[#1a1a1a] mb-1.5">Your name</label>
+                <input
+                  value={commentForm.name}
+                  onChange={(e) => setCommentForm({...commentForm, name: e.target.value})}
+                  placeholder="Optional"
+                  className="w-full bg-[#f5f3ef] border border-[#e8e4de] rounded-lg px-4 py-2.5 text-sm"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-[#1a1a1a] mb-1.5">Comment</label>
+                <textarea
+                  value={commentForm.comment}
+                  onChange={(e) => setCommentForm({...commentForm, comment: e.target.value})}
+                  placeholder="Share your feedback..."
+                  required
+                  rows={4}
+                  className="w-full bg-[#f5f3ef] border border-[#e8e4de] rounded-lg px-4 py-2.5 text-sm resize-none"
+                />
+              </div>
+              <div className="flex justify-end">
+                <button type="submit" className="bg-[#c77e3a] text-white rounded-lg py-2.5 px-4 text-sm font-medium">Send</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
 
       {/* Menu Grid */}
       <main className="max-w-7xl mx-auto px-3 sm:px-6 py-3 sm:py-6">

@@ -28,3 +28,15 @@ export async function ensureMenuTable() {
   `)
   console.log('[db] menu_items table ready')
 }
+
+export async function ensureCommentsTable() {
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS comments (
+      id BIGSERIAL PRIMARY KEY,
+      name TEXT,
+      comment TEXT NOT NULL,
+      created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+    )
+  `)
+  console.log('[db] comments table ready')
+}
