@@ -14,7 +14,7 @@ function PrivateRoute({ children }) {
 
 export default function App() {
   const { isAuthenticated } = useSelector((s) => s.auth)
-  const { data } = useGetMeQuery(undefined, { skip: isAuthenticated })
+  const { data } = useGetMeQuery()
   const dispatch = useDispatch()
   const [path, setPath] = useState(window.location.pathname)
 
