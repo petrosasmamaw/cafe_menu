@@ -47,6 +47,25 @@ export default function Home(){
 
   const items = data?.menu || []
 
+  async function checkAdmin() {
+    const rawApiBase = import.meta.env.VITE_API_BASE || 'http://localhost:4000/api'
+    const apiBase = rawApiBase.endsWith('/api') ? rawApiBase : rawApiBase.replace(/\/$/, '') + '/api'
+    try {
+      const res = await fetch(`${apiBase}/auth/me`, { credentials: 'include' })
+      const d = await res.json()
+      if (d?.user) {
+        window.history.pushState({}, '', '/admin')
+      } else {
+        window.history.pushState({}, '', '/admin/login')
+      }
+      window.dispatchEvent(new PopStateEvent('popstate'))
+    } catch (err) {
+      console.error('Session check failed', err)
+      window.history.pushState({}, '', '/admin/login')
+      window.dispatchEvent(new PopStateEvent('popstate'))
+    }
+  }
+
   function normalize(str){
     return String(str || '').toLowerCase().replace(/-/g,' ').replace(/\s+/g,' ').trim()
   }
@@ -102,12 +121,12 @@ export default function Home(){
               >
                 Comment
               </button>
-              <a
-                href="/admin"
+              <button
+                onClick={checkAdmin}
                 className="border border-[#c77e3a] text-[#c77e3a] bg-[#fff9f2] px-3.5 py-1.5 rounded-full text-xs font-medium hover:opacity-90 transition-opacity flex-shrink-0"
               >
                 Admin
-              </a>
+              </button>
             </div>
           </div>
 

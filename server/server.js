@@ -41,17 +41,19 @@ app.use('/api/comments', commentsRoutes)
 const port = process.env.PORT || 4000
 
 async function startServer() {
-	try {
-		console.log('[server] verifying Neon database connection...')
-		await verifyDatabaseConnection()
+  try {
+    console.log('[server] verifying Neon database connection...')
+    await verifyDatabaseConnection()
     await ensureMenuTable()
     await ensureCommentsTable()
-		app.listen(port, () => console.log(`[server] listening on ${port}`))
-	} catch (error) {
-		console.error('[server] failed to connect to Neon database')
-		console.error(error)
-		process.exit(1)
-	}
+    app.listen(port, () => console.log(`[server] listening on ${port}`))
+  } catch (error) {
+    console.warn('[server] warning: failed to initialize database — continuing without DB')
+    console.warn(error)
+    // Start server even if DB checks fail so endpoints that do not depend on DB (auth via Supabase)
+    // can still be used during local development.
+    app.listen(port, () => console.log(`[server] listening on ${port} (DB unavailable)`))
+  }
 }
 
 startServer()

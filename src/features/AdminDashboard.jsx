@@ -29,6 +29,25 @@ export default function AdminDashboard(){
   const [del] = useDeleteMenuItemMutation()
 
   const items = data?.menu || []
+  
+  async function checkComments() {
+    const rawApiBase = import.meta.env.VITE_API_BASE || 'http://localhost:4000/api'
+    const apiBase = rawApiBase.endsWith('/api') ? rawApiBase : rawApiBase.replace(/\/$/, '') + '/api'
+    try {
+      const res = await fetch(`${apiBase}/auth/me`, { credentials: 'include' })
+      const d = await res.json()
+      if (d?.user) {
+        window.history.pushState({}, '', '/admin/comments')
+      } else {
+        window.history.pushState({}, '', '/admin/login')
+      }
+      window.dispatchEvent(new PopStateEvent('popstate'))
+    } catch (err) {
+      console.error('Session check failed', err)
+      window.history.pushState({}, '', '/admin/login')
+      window.dispatchEvent(new PopStateEvent('popstate'))
+    }
+  }
   const [open,setOpen] = useState(false)
   const [form,setForm] = useState({name:'',description:'',price:0,category:'Breakfast',image_url:'',is_available:true})
   const [editingId, setEditingId] = useState(null)
@@ -91,12 +110,12 @@ export default function AdminDashboard(){
               <h1 className="text-lg sm:text-xl font-medium text-[#1a1a1a]"> LOL Admin Dashboard</h1>
             </div>
             <div className="flex items-center gap-3">
-              <a
-                href="/admin/comments"
+              <button
+                onClick={checkComments}
                 className="bg-white border border-[#e8e4de] text-[#374151] rounded-lg px-3 py-2 text-sm font-medium hover:opacity-90 transition-opacity"
               >
                 Comments
-              </a>
+              </button>
               <button 
                 onClick={()=>{ 
                   setForm({name:'',description:'',price:0,category:'Breakfast',image_url:'',is_available:true})
