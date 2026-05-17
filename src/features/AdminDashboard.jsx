@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react'
 import AdminNavbar from '../components/AdminNavbar'
-const categories = ['All','Breakfast','Fasting Lunch','Non-Fasting Lunch','Cold Drinks','Hot Drinks','Juices','Pizza','Burger']
 import { useGetMenuQuery, useAddMenuItemMutation, useUpdateMenuItemMutation, useDeleteMenuItemMutation } from '../store/api/menuApi'
+const categories = ['All','Breakfast','Fasting Lunch','Non-Fasting Lunch','Cold Drinks','Hot Drinks','Juices','Pizza','Burger']
 
 function Modal({open,onClose,children}){
   if(!open) return null
@@ -89,46 +89,7 @@ export default function AdminDashboard(){
 
   return (
     <div className="min-h-screen bg-[#fafaf8]">
-      {/* Header */}
-      <header className="bg-white border-b border-[#e8e4de] sticky top-0 z-40">
-        <div className="max-w-7xl mx-auto px-3 sm:px-6 py-4">
-            <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <a
-                href="/"
-                className="text-[#6b3e26] text-sm hover:opacity-80 flex items-center gap-1"
-              >
-                <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                  <path d="M19 12H5M12 19l-7-7 7-7" />
-                </svg>
-                Back
-              </a>
-              <h1 className="text-lg sm:text-xl font-medium text-[#1a1a1a]"> LOL Admin Dashboard</h1>
-            </div>
-            <div className="flex items-center gap-3">
-              <button
-                onClick={checkComments}
-                className="bg-white border border-[#e8e4de] text-[#374151] rounded-lg px-3 py-2 text-sm font-medium hover:opacity-90 transition-opacity"
-              >
-                Comments
-              </button>
-              <button 
-                onClick={()=>{ 
-                  setForm({name:'',description:'',price:0,category:'Breakfast',image_url:'',is_available:true})
-                  setEditingId(null)
-                  setOpen(true)
-                }} 
-                className="bg-[#c77e3a] text-white rounded-lg px-4 py-2 text-sm font-medium hover:opacity-90 transition-opacity flex items-center gap-1.5"
-              >
-              <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                <path d="M12 5v14M5 12h14" />
-              </svg>
-              Add Item
-            </button>
-            </div>
-          </div>
-        </div>
-      </header>
+      <AdminNavbar page="dashboard" onGoHome={() => { window.history.pushState({}, '', '/'); window.dispatchEvent(new PopStateEvent('popstate')) }} onGoComments={() => { window.history.pushState({}, '', '/admin/comments'); window.dispatchEvent(new PopStateEvent('popstate')) }} />
 
       {/* Main content */}
       <main className="max-w-7xl mx-auto px-3 sm:px-6 py-4 sm:py-6">
