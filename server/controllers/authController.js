@@ -25,7 +25,12 @@ export async function login(req, res) {
     if (signInError) return res.status(401).json({ error: signInError.message })
 
     const session = signInData.session
-    res.cookie('token', session.access_token, { httpOnly: true, secure: false, sameSite: 'lax' })
+    const cookieOptions = {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+    }
+    res.cookie('token', session.access_token, cookieOptions)
     return res.json({ user: signInData.user })
   } catch (err) {
     console.error(err)
@@ -46,7 +51,12 @@ export async function register(req, res) {
 
     const accessToken = data.session?.access_token
     if (accessToken) {
-      res.cookie('token', accessToken, { httpOnly: true, secure: false, sameSite: 'lax' })
+      const cookieOptions = {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+      }
+      res.cookie('token', accessToken, cookieOptions)
     }
 
     return res.status(201).json({ user: data.user, session: Boolean(data.session) })
@@ -57,7 +67,12 @@ export async function register(req, res) {
 }
 
 export async function logout(req, res) {
-  res.clearCookie('token')
+  const cookieOptions = {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+  }
+  res.clearCookie('token', cookieOptions)
   res.json({ ok: true })
 }
 
