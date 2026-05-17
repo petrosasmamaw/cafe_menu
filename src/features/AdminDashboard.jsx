@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react'
+import AdminNavbar from '../components/AdminNavbar'
 const categories = ['All','Breakfast','Fasting Lunch','Non-Fasting Lunch','Cold Drinks','Hot Drinks','Juices','Pizza','Burger']
 import { useGetMenuQuery, useAddMenuItemMutation, useUpdateMenuItemMutation, useDeleteMenuItemMutation } from '../store/api/menuApi'
 
@@ -9,12 +10,7 @@ function Modal({open,onClose,children}){
       <div className="absolute inset-0 bg-black/35" onClick={onClose} />
       <div className="relative bg-white rounded-2xl w-full max-w-lg border border-[#e8e4de] p-6 sm:p-8 max-h-[90vh] overflow-y-auto">
         <div className="flex justify-end mb-4">
-          <button onClick={onClose} className="text-gray-400 text-sm hover:text-[#1a1a1a] transition-colors flex items-center gap-1">
-            <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-              <path d="M18 6L6 18M6 6l12 12" />
-            </svg>
-            Close
-          </button>
+          <button onClick={onClose} className="text-gray-400 text-sm hover:text-[#1a1a1a] transition-colors flex items-center gap-1">Close</button>
         </div>
         {children}
       </div>
@@ -29,25 +25,6 @@ export default function AdminDashboard(){
   const [del] = useDeleteMenuItemMutation()
 
   const items = data?.menu || []
-  
-  async function checkComments() {
-    const rawApiBase = import.meta.env.VITE_API_BASE || 'http://localhost:4000/api'
-    const apiBase = rawApiBase.endsWith('/api') ? rawApiBase : rawApiBase.replace(/\/$/, '') + '/api'
-    try {
-      const res = await fetch(`${apiBase}/auth/me`, { credentials: 'include' })
-      const d = await res.json()
-      if (d?.user) {
-        window.history.pushState({}, '', '/admin/comments')
-      } else {
-        window.history.pushState({}, '', '/admin/login')
-      }
-      window.dispatchEvent(new PopStateEvent('popstate'))
-    } catch (err) {
-      console.error('Session check failed', err)
-      window.history.pushState({}, '', '/admin/login')
-      window.dispatchEvent(new PopStateEvent('popstate'))
-    }
-  }
   const [open,setOpen] = useState(false)
   const [form,setForm] = useState({name:'',description:'',price:0,category:'Breakfast',image_url:'',is_available:true})
   const [editingId, setEditingId] = useState(null)
@@ -85,6 +62,25 @@ export default function AdminDashboard(){
       if(tok.endsWith('ing') && normItem.includes(tok.replace(/ing$/,''))) return true
       return false
     })
+  }
+
+  async function checkComments() {
+    const rawApiBase = import.meta.env.VITE_API_BASE || 'http://localhost:4002/api'
+    const apiBase = rawApiBase.endsWith('/api') ? rawApiBase : rawApiBase.replace(/\/$/, '') + '/api'
+    try {
+      const res = await fetch(`${apiBase}/auth/me`, { credentials: 'include' })
+      const d = await res.json()
+      if (d?.user) {
+        window.history.pushState({}, '', '/admin/comments')
+      } else {
+        window.history.pushState({}, '', '/admin/login')
+      }
+      window.dispatchEvent(new PopStateEvent('popstate'))
+    } catch (err) {
+      console.error('Session check failed', err)
+      window.history.pushState({}, '', '/admin/login')
+      window.dispatchEvent(new PopStateEvent('popstate'))
+    }
   }
 
   const filteredItems = useMemo(()=>{

@@ -1,5 +1,6 @@
 import React from 'react'
 import { useGetCommentsQuery } from '../store/api/commentsApi'
+import AdminNavbar from '../components/AdminNavbar'
 
 export default function AdminComments(){
   const { data, isLoading, isFetching } = useGetCommentsQuery()
@@ -7,16 +8,7 @@ export default function AdminComments(){
 
   return (
     <div className="min-h-screen bg-[#fafaf8]">
-      <header className="bg-white border-b border-[#e8e4de] sticky top-0 z-40">
-        <div className="max-w-7xl mx-auto px-3 sm:px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <a href="/admin" className="text-[#6b3e26] text-sm hover:opacity-80 flex items-center gap-1">Back</a>
-              <h1 className="text-lg sm:text-xl font-medium text-[#1a1a1a]">Comments</h1>
-            </div>
-          </div>
-        </div>
-      </header>
+      <AdminNavbar page="comments" onGoDashboard={() => { window.history.pushState({}, '', '/admin'); window.dispatchEvent(new PopStateEvent('popstate')) }} onGoHome={() => { window.history.pushState({}, '', '/'); window.dispatchEvent(new PopStateEvent('popstate')) }} />
 
       <main className="max-w-7xl mx-auto px-3 sm:px-6 py-6">
         {isLoading || isFetching ? (
