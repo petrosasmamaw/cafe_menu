@@ -31,6 +31,7 @@ export async function login(req, res) {
       sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
     }
     res.cookie('token', session.access_token, cookieOptions)
+    console.log('[auth] login set-cookie:', { secure: cookieOptions.secure, sameSite: cookieOptions.sameSite, production: process.env.NODE_ENV === 'production' })
     return res.json({ user: signInData.user })
   } catch (err) {
     console.error(err)
@@ -57,6 +58,7 @@ export async function register(req, res) {
         sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
       }
       res.cookie('token', accessToken, cookieOptions)
+      console.log('[auth] register set-cookie:', { secure: cookieOptions.secure, sameSite: cookieOptions.sameSite, production: process.env.NODE_ENV === 'production' })
     }
 
     return res.status(201).json({ user: data.user, session: Boolean(data.session) })
@@ -73,6 +75,7 @@ export async function logout(req, res) {
     sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
   }
   res.clearCookie('token', cookieOptions)
+  console.log('[auth] logout cleared cookie:', { secure: cookieOptions.secure, sameSite: cookieOptions.sameSite, production: process.env.NODE_ENV === 'production' })
   res.json({ ok: true })
 }
 
