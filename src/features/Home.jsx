@@ -1,6 +1,12 @@
-import React, { useState, useMemo } from 'react'
+import React, { useState, useMemo, useEffect } from 'react'
 import { useGetMenuQuery } from '../store/api/menuApi'
 import { useAddCommentMutation } from '../store/api/commentsApi'
+import BranchesSection from '../components/branches/BranchesSection'
+import OfflineBanner from '../components/OfflineBanner'
+import InstallPWAButton from '../components/InstallPWAButton'
+import CachedMenuNotice from '../components/CachedMenuNotice'
+import { cacheMenuResponse } from '../pwa/cacheMenu'
+import { getAllMenu } from '../pwa/indexedDB'
 
 const categories = ['All','Breakfast','Fasting Lunch','Non-Fasting Lunch','Cold Drinks','Hot Drinks','Juices','Pizza','Burger']
 
@@ -44,8 +50,22 @@ export default function Home(){
   const [commentForm, setCommentForm] = useState({ name: '', comment: '' })
   const [q,setQ] = useState('')
   const [cat,setCat] = useState('All')
+  const [cachedMenu, setCachedMenu] = useState(null)
 
   const items = data?.menu || []
+
+  useEffect(() => {
+    if (data?.menu && Array.isArray(data.menu) && data.menu.length) {
+      cacheMenuResponse(data.menu)
+      setCachedMenu(null)
+    } else if (!navigator.onLine) {
+      getAllMenu().then((m) => {
+        if (m && m.length) setCachedMenu(m)
+      })
+    }
+  }, [data])
+
+  const effectiveItems = (data?.menu && data.menu.length) ? data.menu : (cachedMenu || [])
 
   async function checkAdmin() {
     const rawApiBase = import.meta.env.VITE_API_BASE || 'http://localhost:4000/api'
@@ -85,15 +105,18 @@ export default function Home(){
   }
 
   const filtered = useMemo(()=>{
-    return items.filter(i=>{
+    return effectiveItems.filter(i=>{
       if(!matchesCategory(i.category, cat)) return false
       if(q.trim() && !(`${i.name} ${i.description}`.toLowerCase().includes(q.toLowerCase()))) return false
       return true
     })
-  },[items,q,cat])
+  },[effectiveItems,q,cat])
 
   return (
     <div className="min-h-screen bg-[#fafaf8]">
+      <OfflineBanner />
+      <InstallPWAButton />
+      <CachedMenuNotice visible={!!cachedMenu && (!data?.menu || data.menu.length===0)} />
       {/* Sticky Header */}
       <header className="sticky top-0 z-50 bg-white border-b border-[#e8e4de]">
         <div className="max-w-7xl mx-auto px-3 sm:px-6 py-3">
@@ -229,6 +252,9 @@ export default function Home(){
           </div>
         )}
       </main>
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 py-6">
+        <BranchesSection />
+      </div>
     </div>
   )
 }
