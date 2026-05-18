@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react'
+import { motion } from 'framer-motion'
 import { useGetMenuQuery } from '../store/api/menuApi'
 import { useAddCommentMutation } from '../store/api/commentsApi'
 
@@ -6,7 +7,7 @@ const categories = ['All','Breakfast','Fasting Lunch','Non-Fasting Lunch','Cold 
 
 function SkeletonCard(){
   return (
-    <div className="animate-pulse bg-white border border-[#e8e4de] rounded-xl p-4">
+    <div className="animate-pulse glass p-4">
       <div className="h-24 sm:h-40 bg-[#f0ede8] rounded-lg mb-3" />
       <div className="h-4 bg-[#f0ede8] rounded mb-2 w-3/4" />
       <div className="h-3 bg-[#f0ede8] rounded w-1/2" />
@@ -16,24 +17,24 @@ function SkeletonCard(){
 
 function MenuCard({item}){
   return (
-    <div className="bg-white border border-[#e8e4de] rounded-xl overflow-hidden shadow-subtle">
+    <motion.div whileHover={{ scale: 1.02 }} className="card-hover glass overflow-hidden">
       <div className="relative">
-        <img src={item.image_url} alt={item.name} className="w-full h-24 sm:h-40 object-cover bg-[#f0ede8]" />
-        <span className={`absolute top-2 right-2 text-[9px] sm:text-xs font-medium px-1.5 py-0.5 rounded ${
-          item.is_available ? 'bg-[#e6f2e8] text-[#3a7a42]' : 'bg-[#fde8e8] text-[#a32d2d]'
-        }`}>
+        <img src={item.image_url} alt={item.name} className="w-full h-36 sm:h-48 object-cover bg-[#f0ede8]" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/25 to-transparent" />
+        <span className={`absolute top-3 left-3 text-xs font-semibold px-2 py-1 rounded ${item.is_available ? 'bg-white/80 text-[#2f5a36]' : 'bg-white/80 text-[#8b2b2b]'}`}>
           {item.is_available ? 'Available' : 'Out'}
         </span>
+        <div className="absolute top-3 right-3 price-badge">${item.price}</div>
       </div>
-      <div className="p-2 sm:p-3">
-        <h3 className="text-sm sm:text-base font-medium text-[#1a1a1a] truncate mb-1">{item.name}</h3>
-        <p className="text-[10px] sm:text-xs text-gray-400 line-clamp-1 sm:line-clamp-2 mb-2">{item.description}</p>
+      <div className="p-4">
+        <h3 className="text-sm sm:text-base lux-heading mb-1">{item.name}</h3>
+        <p className="text-[11px] sm:text-sm text-gray-500 line-clamp-2 mb-3">{item.description}</p>
         <div className="flex items-center justify-between">
-          <span className="text-sm sm:text-base font-medium text-[#c77e3a]">${item.price}</span>
-          <span className="bg-[#fdf3e8] text-[#a0621a] text-[9px] sm:text-xs px-2 py-0.5 rounded">{item.category}</span>
+          <span className="text-xs text-gray-500 px-2 py-1 rounded-full bg-white/40">{item.category}</span>
+          <button className="text-sm text-[#6b3e26] font-medium">Order</button>
         </div>
       </div>
-    </div>
+    </motion.div>
   )
 }
 
@@ -93,7 +94,31 @@ export default function Home(){
   },[items,q,cat])
 
   return (
-    <div className="min-h-screen bg-[#fafaf8]">
+    <div className="min-h-screen luxury-bg">
+      {/* Hero */}
+      <section className="max-w-7xl mx-auto px-3 sm:px-6 py-8 sm:py-12">
+        <div className="flex flex-col md:flex-row items-center gap-6">
+          <div className="flex-1">
+            <h2 className="lux-heading text-3xl sm:text-4xl font-bold text-[#2b2b2b]">Experience LOL Café — Curated Flavors, Crafted Luxury</h2>
+            <p className="mt-3 text-gray-600 max-w-xl">Discover premium selections crafted from the finest ingredients. Browse the menu, find your favorite branch, and enjoy a beautiful, app-like experience.</p>
+            <div className="mt-6 flex gap-3">
+              <button className="price-badge">Explore Menu</button>
+              <button onClick={checkAdmin} className="bg-white/90 border border-[#e8e4de] px-4 py-2 rounded-lg">Admin</button>
+            </div>
+          </div>
+          <div className="w-full md:w-96">
+            <div className="glass p-4">
+              <img src="/icons/icon-512.svg" alt="LOL" className="w-full h-44 object-contain" />
+              <div className="mt-3">
+                <h4 className="lux-heading text-lg">Featured</h4>
+                <p className="text-sm text-gray-500">Chef's selection of the week — limited availability.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 py-3 sm:py-6">
       {/* Sticky Header */}
       <header className="sticky top-0 z-50 bg-white border-b border-[#e8e4de]">
         <div className="max-w-7xl mx-auto px-3 sm:px-6 py-3">
@@ -216,7 +241,7 @@ export default function Home(){
       {/* Menu Grid */}
       <main className="max-w-7xl mx-auto px-3 sm:px-6 py-3 sm:py-6">
         {isLoading ? (
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 sm:gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
             {Array.from({length:6}).map((_,i)=> <SkeletonCard key={i} />)}
           </div>
         ) : filtered.length===0 ? (
@@ -224,7 +249,7 @@ export default function Home(){
             <p className="text-gray-400 text-sm">No items found</p>
           </div>
         ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 sm:gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {filtered.map(item=> <MenuCard key={item.id} item={item} />)}
           </div>
         )}
