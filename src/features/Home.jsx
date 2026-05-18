@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react'
 import { useGetMenuQuery } from '../store/api/menuApi'
 import { useAddCommentMutation } from '../store/api/commentsApi'
+import BranchesSection from '../components/branches/BranchesSection'
 
 const categories = ['All','Breakfast','Fasting Lunch','Non-Fasting Lunch','Cold Drinks','Hot Drinks','Juices','Pizza','Burger']
 
@@ -229,6 +230,9 @@ export default function Home(){
           </div>
         )}
       </main>
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 py-6">
+        <BranchesSection />
+      </div>
     </div>
   )
 }
