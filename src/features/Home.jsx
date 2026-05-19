@@ -95,29 +95,6 @@ export default function Home(){
 
   return (
     <div className="min-h-screen luxury-bg">
-      {/* Hero */}
-      <section className="max-w-7xl mx-auto px-3 sm:px-6 py-8 sm:py-12">
-        <div className="flex flex-col md:flex-row items-center gap-6">
-          <div className="flex-1">
-            <h2 className="lux-heading text-3xl sm:text-4xl font-bold text-[#2b2b2b]">Experience LOL Café — Curated Flavors, Crafted Luxury</h2>
-            <p className="mt-3 text-gray-600 max-w-xl">Discover premium selections crafted from the finest ingredients. Browse the menu, find your favorite branch, and enjoy a beautiful, app-like experience.</p>
-            <div className="mt-6 flex gap-3">
-              <button className="price-badge">Explore Menu</button>
-              <button onClick={checkAdmin} className="bg-white/90 border border-[#e8e4de] px-4 py-2 rounded-lg">Admin</button>
-            </div>
-          </div>
-          <div className="w-full md:w-96">
-            <div className="glass p-4">
-              <img src="/icons/icon-512.svg" alt="LOL" className="w-full h-44 object-contain" />
-              <div className="mt-3">
-                <h4 className="lux-heading text-lg">Featured</h4>
-                <p className="text-sm text-gray-500">Chef's selection of the week — limited availability.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
       <div className="max-w-7xl mx-auto px-3 sm:px-6 py-3 sm:py-6">
         {/* Sticky Header */}
         <header className="sticky top-0 z-50 bg-white border-b border-[#e8e4de]">
