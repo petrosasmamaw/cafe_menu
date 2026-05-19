@@ -135,7 +135,7 @@ export default function AdminDashboard(){
                   
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-sm sm:text-base font-medium text-[#c77e3a]">
-                      ${it.price}
+                      Birr {it.price}
                     </span>
                     <span className="bg-[#fdf3e8] text-[#a0621a] text-[9px] sm:text-xs px-2 py-0.5 rounded">
                       {it.category}
@@ -205,7 +205,7 @@ export default function AdminDashboard(){
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-[#1a1a1a] mb-1.5">Price ($)</label>
+              <label className="block text-sm font-medium text-[#1a1a1a] mb-1.5">Price (Birr)</label>
               <input 
                 type="number" 
                 step="0.01"
