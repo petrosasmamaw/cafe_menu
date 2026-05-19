@@ -15,6 +15,7 @@ app.set('trust proxy', 1)
 const allowedOrigins = [
   'http://localhost:5173',
   'http://localhost:5273',
+  'https://pwa-cafe-menu.netlify.app',
   'https://cafe-menu-sable.vercel.app',
   // allow frontend origin from env when deployed
   process.env.FRONTEND_URL,
