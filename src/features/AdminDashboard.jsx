@@ -161,9 +161,23 @@ export default function AdminDashboard(){
                 <div style={{ padding: '16px 18px 18px' }}>
                   <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '17px', fontWeight: 600, color: '#2c1a0a', marginBottom: '6px' }}>{it.name}</h3>
                   <p style={{ fontSize: '12px', color: '#9a8878', lineHeight: 1.6, marginBottom: '12px', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{it.description}</p>
-                  <div style={{ display: 'flex', gap: '8px' }}>
-                    <button onClick={()=>{ setForm({name:it.name, description:it.description||'', price:it.price, category:it.category||'Breakfast', image_url:it.image_url||'', is_available:!!it.is_available}); setEditingId(it.id); setOpen(true) }} style={{ flex: 1, background: '#f5f0e8', border: '1px solid #ede5d8', color: '#6b3e26', padding: '10px', borderRadius: '10px' }}>Edit</button>
-                    <button onClick={()=>del(it.id)} style={{ flex: 1, background: '#fde8e8', border: '1px solid #f0bcbc', color: '#a32d2d', padding: '10px', borderRadius: '10px' }}>Delete</button>
+                  <div style={{ display: 'flex', gap: '8px', justifyContent: 'flex-end', alignItems: 'center' }}>
+                    <button
+                      onClick={()=>{ setForm({name:it.name, description:it.description||'', price:it.price, category:it.category||'Breakfast', image_url:it.image_url||'', is_available:!!it.is_available}); setEditingId(it.id); setOpen(true) }}
+                      style={{ background: 'transparent', border: 'none', color: '#2563b8', padding: '6px 10px', borderRadius: '8px', fontWeight: 700, fontSize: '13px', cursor: 'pointer' }}
+                      onMouseEnter={e => { e.currentTarget.style.background = 'rgba(37,99,184,0.06)'; }}
+                      onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; }}
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={()=>del(it.id)}
+                      style={{ background: 'transparent', border: 'none', color: '#b82525', padding: '6px 10px', borderRadius: '8px', fontWeight: 700, fontSize: '13px', cursor: 'pointer' }}
+                      onMouseEnter={e => { e.currentTarget.style.background = 'rgba(184,37,37,0.06)'; }}
+                      onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; }}
+                    >
+                      Delete
+                    </button>
                   </div>
                 </div>
               </div>
