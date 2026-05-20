@@ -7,28 +7,38 @@ export default function AdminComments(){
   const comments = data?.comments || []
 
   return (
-    <div className="min-h-screen bg-[#fafaf8]">
-      <AdminNavbar page="comments" onGoDashboard={() => { window.history.pushState({}, '', '/admin'); window.dispatchEvent(new PopStateEvent('popstate')) }} onGoHome={() => { window.history.pushState({}, '', '/'); window.dispatchEvent(new PopStateEvent('popstate')) }} />
+    <>
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600;700&display=swap');
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'DM Sans', sans-serif; }
+        .lol-root { min-height: 100vh; background: #faf7f2; background-image: radial-gradient(ellipse 70% 40% at 50% 0%, rgba(201,144,58,0.07) 0%, transparent 60%), radial-gradient(ellipse 50% 30% at 90% 10%, rgba(180,110,30,0.05) 0%, transparent 50%); }
+        .lol-card { background: #ffffff; border: 1px solid #f0e8dc; border-radius: 16px; overflow: hidden; }
+      `}</style>
 
-      <main className="max-w-7xl mx-auto px-3 sm:px-6 py-6">
-        {isLoading || isFetching ? (
-          <p className="text-gray-400">Loading...</p>
-        ) : comments.length === 0 ? (
-          <p className="text-gray-400">No comments yet</p>
-        ) : (
-          <div className="grid gap-3">
-            {comments.map(c => (
-              <div key={c.id} className="bg-white border border-[#e8e4de] rounded-xl p-4">
-                <div className="flex items-center justify-between mb-2">
-                  <div className="text-sm font-medium text-[#1a1a1a]">{c.name || 'Anonymous'}</div>
-                  <div className="text-xs text-gray-400">{new Date(c.created_at).toLocaleString()}</div>
+      <div className="lol-root">
+        <AdminNavbar page="comments" onGoDashboard={() => { window.history.pushState({}, '', '/admin'); window.dispatchEvent(new PopStateEvent('popstate')) }} onGoHome={() => { window.history.pushState({}, '', '/'); window.dispatchEvent(new PopStateEvent('popstate')) }} />
+
+        <main style={{ maxWidth: '1100px', margin: '0 auto', padding: '28px 16px 64px' }}>
+          {isLoading || isFetching ? (
+            <p style={{ color: '#c4b8a8' }}>Loading...</p>
+          ) : comments.length === 0 ? (
+            <p style={{ color: '#c4b8a8' }}>No comments yet</p>
+          ) : (
+            <div style={{ display: 'grid', gap: 12 }}>
+              {comments.map(c => (
+                <div key={c.id} className="lol-card" style={{ padding: 14 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
+                    <div style={{ fontSize: 14, fontWeight: 600, color: '#1a1a1a' }}>{c.name || 'Anonymous'}</div>
+                    <div style={{ fontSize: 12, color: '#c4b8a8' }}>{new Date(c.created_at).toLocaleString()}</div>
+                  </div>
+                  <div style={{ fontSize: 13, color: '#374151', lineHeight: 1.5 }}>{c.comment}</div>
                 </div>
-                <div className="text-sm text-[#374151]">{c.comment}</div>
-              </div>
-            ))}
-          </div>
-        )}
-      </main>
-    </div>
+              ))}
+            </div>
+          )}
+        </main>
+      </div>
+    </>
   )
 }
