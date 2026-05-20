@@ -6,11 +6,12 @@ const categories = ['All','Breakfast','Fasting Lunch','Non-Fasting Lunch','Cold 
 function Modal({open,onClose,children}){
   if(!open) return null
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
-      <div className="absolute inset-0 bg-black/35" onClick={onClose} />
-      <div className="relative bg-white rounded-2xl w-full max-w-lg border border-[#e8e4de] p-6 sm:p-8 max-h-[90vh] overflow-y-auto">
-        <div className="flex justify-end mb-4">
-          <button onClick={onClose} className="text-gray-400 text-sm hover:text-[#1a1a1a] transition-colors flex items-center gap-1">Close</button>
+    <div style={{ position: 'fixed', inset: 0, zIndex: 50, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '16px' }}>
+      <div style={{ position: 'absolute', inset: 0, background: 'rgba(30,15,4,0.45)', backdropFilter: 'blur(8px)' }} onClick={onClose} />
+      <div style={{ position: 'relative', background: '#ffffff', border: '1px solid #f0e8dc', borderRadius: '22px', width: '100%', maxWidth: '520px', padding: '24px', boxShadow: '0 32px 80px rgba(30,15,4,0.2)' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '18px' }}>
+          <div />
+          <button onClick={onClose} style={{ background: '#f5f0e8', border: '1px solid #ede5d8', borderRadius: 8, padding: '6px 10px', color: '#9a8878', cursor: 'pointer' }}>✕</button>
         </div>
         {children}
       </div>
@@ -188,102 +189,57 @@ export default function AdminDashboard(){
 
       {/* Modal */}
       <Modal open={open} onClose={()=>{ setOpen(false); setEditingId(null); }}>
-        <form onSubmit={handleSave} className="space-y-4">
-          <h2 className="text-lg font-medium text-[#1a1a1a] mb-6">
-            {editingId ? 'Edit Menu Item' : 'Add New Item'}
-          </h2>
-
-          <div>
-            <label className="block text-sm font-medium text-[#1a1a1a] mb-1.5">Item Name</label>
-            <input 
-              placeholder="e.g., Espresso Coffee" 
-              value={form.name} 
-              onChange={e=>setForm({...form,name:e.target.value})} 
-              className="w-full bg-[#f5f3ef] border border-[#e8e4de] rounded-lg px-4 py-2.5 text-sm text-[#1a1a1a] placeholder-gray-400 focus:ring-2 focus:ring-[#c77e3a]/20"
-              required
-            />
+        <form onSubmit={handleSave} style={{ display: 'grid', gap: '10px' }}>
+          <div style={{ marginBottom: 6 }}>
+            <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 20, fontWeight: 600, color: '#1a1a1a' }}>{editingId ? 'Edit Menu Item' : 'Add New Item'}</h2>
+            <p style={{ fontSize: 12, color: '#c4b8a8', marginTop: 4 }}>Keep it short and sweet — changes save instantly on submit.</p>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-[#1a1a1a] mb-1.5">Description</label>
-            <textarea 
-              placeholder="Brief description..." 
-              value={form.description} 
-              onChange={e=>setForm({...form,description:e.target.value})} 
-              className="w-full bg-[#f5f3ef] border border-[#e8e4de] rounded-lg px-4 py-2.5 text-sm text-[#1a1a1a] placeholder-gray-400 focus:ring-2 focus:ring-[#c77e3a]/20 resize-none"
-              rows="3"
-            />
+            <label style={{ display: 'block', fontSize: 12, color: '#1a1a1a', marginBottom: 6, fontWeight: 600 }}>Item Name</label>
+            <input placeholder="e.g., Espresso Coffee" value={form.name} onChange={e=>setForm({...form,name:e.target.value})} required style={{ width: '100%', background: '#f8f4ee', border: '1px solid #ede5d8', borderRadius: 10, padding: '9px 12px', fontSize: 13, color: '#1a1a1a' }} />
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div>
+            <label style={{ display: 'block', fontSize: 12, color: '#1a1a1a', marginBottom: 6, fontWeight: 600 }}>Description</label>
+            <textarea placeholder="Brief description..." value={form.description} onChange={e=>setForm({...form,description:e.target.value})} rows={2} style={{ width: '100%', background: '#f8f4ee', border: '1px solid #ede5d8', borderRadius: 10, padding: '9px 12px', fontSize: 13, color: '#1a1a1a', resize: 'none' }} />
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
             <div>
-              <label className="block text-sm font-medium text-[#1a1a1a] mb-1.5">Price (Birr)</label>
-              <input 
-                type="number" 
-                step="0.01"
-                min="0"
-                placeholder="5.99" 
-                value={form.price} 
-                onChange={e=>setForm({...form,price:parseFloat(e.target.value)})} 
-                className="w-full bg-[#f5f3ef] border border-[#e8e4de] rounded-lg px-4 py-2.5 text-sm text-[#1a1a1a] placeholder-gray-400 focus:ring-2 focus:ring-[#c77e3a]/20"
-                required
-              />
+              <label style={{ display: 'block', fontSize: 12, color: '#1a1a1a', marginBottom: 6, fontWeight: 600 }}>Price (Birr)</label>
+              <input type="number" step="0.01" min="0" placeholder="5.99" value={form.price} onChange={e=>setForm({...form,price:parseFloat(e.target.value)})} required style={{ width: '100%', background: '#f8f4ee', border: '1px solid #ede5d8', borderRadius: 10, padding: '9px 12px', fontSize: 13 }} />
             </div>
             <div>
-              <label className="block text-sm font-medium text-[#1a1a1a] mb-1.5">Category</label>
-              <select 
-                value={form.category} 
-                onChange={e=>setForm({...form,category:e.target.value})} 
-                className="w-full bg-[#f5f3ef] border border-[#e8e4de] rounded-lg px-4 py-2.5 text-sm text-[#1a1a1a] focus:ring-2 focus:ring-[#c77e3a]/20"
-              >
-                {categories.map(c=> (<option key={c} value={c} className="bg-white">{c}</option>))}
+              <label style={{ display: 'block', fontSize: 12, color: '#1a1a1a', marginBottom: 6, fontWeight: 600 }}>Category</label>
+              <select value={form.category} onChange={e=>setForm({...form,category:e.target.value})} style={{ width: '100%', background: '#f8f4ee', border: '1px solid #ede5d8', borderRadius: 10, padding: '9px 12px', fontSize: 13 }}>
+                {categories.map(c=> (<option key={c} value={c}>{c}</option>))}
               </select>
             </div>
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-[#1a1a1a] mb-1.5">Image URL</label>
-            <input 
-              type="url"
-              placeholder="https://images.unsplash.com/..." 
-              value={form.image_url} 
-              onChange={e=>setForm({...form,image_url:e.target.value})} 
-              className="w-full bg-[#f5f3ef] border border-[#e8e4de] rounded-lg px-4 py-2.5 text-sm text-[#1a1a1a] placeholder-gray-400 focus:ring-2 focus:ring-[#c77e3a]/20"
-            />
+          <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+            <div style={{ flex: 1 }}>
+              <label style={{ display: 'block', fontSize: 12, color: '#1a1a1a', marginBottom: 6, fontWeight: 600 }}>Image URL</label>
+              <input type="url" placeholder="https://images.unsplash.com/..." value={form.image_url} onChange={e=>setForm({...form,image_url:e.target.value})} style={{ width: '100%', background: '#f8f4ee', border: '1px solid #ede5d8', borderRadius: 10, padding: '9px 12px', fontSize: 13 }} />
+            </div>
             {form.image_url && (
-              <div className="mt-3 rounded-lg overflow-hidden w-32 h-32 border border-[#e8e4de]">
-                <img src={form.image_url} alt="Preview" className="w-full h-full object-cover" />
+              <div style={{ width: 72, height: 72, borderRadius: 10, overflow: 'hidden', border: '1px solid #e8e4de' }}>
+                <img src={form.image_url} alt="Preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
               </div>
             )}
           </div>
 
-          <div>
-            <label className="flex items-center gap-3 cursor-pointer">
-              <input 
-                id="available" 
-                type="checkbox" 
-                checked={form.is_available} 
-                onChange={e=>setForm({...form,is_available:e.target.checked})} 
-                className="w-4 h-4 rounded border-gray-300 text-[#c77e3a] focus:ring-[#c77e3a]/20"
-              />
-              <span className="text-sm text-[#1a1a1a]">Available for sale</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer' }}>
+              <input id="available" type="checkbox" checked={form.is_available} onChange={e=>setForm({...form,is_available:e.target.checked})} style={{ width: 16, height: 16 }} />
+              <span style={{ fontSize: 13, color: '#1a1a1a' }}>Available for sale</span>
             </label>
           </div>
 
-          <div className="flex gap-3 pt-4">
-            <button 
-              type="button" 
-              onClick={()=>{ setOpen(false); setEditingId(null); }} 
-              className="flex-1 bg-[#f0ede8] text-[#6b3e26] rounded-lg py-2.5 text-sm font-medium hover:opacity-90 transition-opacity"
-            >
-              Cancel
-            </button>
-            <button 
-              type="submit"
-              className="flex-1 bg-[#c77e3a] text-white rounded-lg py-2.5 text-sm font-medium hover:opacity-90 transition-opacity"
-            >
-              {editingId ? 'Save Changes' : 'Add Item'}
-            </button>
+          <div style={{ display: 'flex', gap: 12, marginTop: 6 }}>
+            <button type="button" onClick={()=>{ setOpen(false); setEditingId(null); }} style={{ flex: 1, background: 'transparent', border: '1px solid rgba(107,62,38,0.12)', color: '#6b3e26', borderRadius: 10, padding: '10px 12px', fontWeight: 600 }}>Cancel</button>
+            <button type="submit" style={{ flex: 1, background: 'linear-gradient(135deg, #c9903a, #e8b86d)', border: 'none', color: '#fff', borderRadius: 10, padding: '10px 12px', fontWeight: 700 }}>{editingId ? 'Save Changes' : 'Add Item'}</button>
           </div>
         </form>
       </Modal>
