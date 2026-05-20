@@ -161,10 +161,10 @@ export default function AdminDashboard(){
                 <div style={{ padding: '16px 18px 18px' }}>
                   <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '17px', fontWeight: 600, color: '#2c1a0a', marginBottom: '6px' }}>{it.name}</h3>
                   <p style={{ fontSize: '12px', color: '#9a8878', lineHeight: 1.6, marginBottom: '12px', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{it.description}</p>
-                  <div style={{ display: 'flex', gap: '8px', justifyContent: 'flex-end', alignItems: 'center' }}>
+                  <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end', alignItems: 'center' }}>
                     <button
                       onClick={()=>{ setForm({name:it.name, description:it.description||'', price:it.price, category:it.category||'Breakfast', image_url:it.image_url||'', is_available:!!it.is_available}); setEditingId(it.id); setOpen(true) }}
-                      style={{ background: 'transparent', border: 'none', color: '#2563b8', padding: '6px 10px', borderRadius: '8px', fontWeight: 700, fontSize: '13px', cursor: 'pointer' }}
+                      style={{ background: 'transparent', border: '1px solid rgba(37,99,184,0.14)', color: '#2563b8', padding: '6px 12px', borderRadius: '8px', fontWeight: 700, fontSize: '13px', cursor: 'pointer', minWidth: '72px', textAlign: 'center' }}
                       onMouseEnter={e => { e.currentTarget.style.background = 'rgba(37,99,184,0.06)'; }}
                       onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; }}
                     >
@@ -172,7 +172,7 @@ export default function AdminDashboard(){
                     </button>
                     <button
                       onClick={()=>del(it.id)}
-                      style={{ background: 'transparent', border: 'none', color: '#b82525', padding: '6px 10px', borderRadius: '8px', fontWeight: 700, fontSize: '13px', cursor: 'pointer' }}
+                      style={{ background: 'transparent', border: '1px solid rgba(184,37,37,0.12)', color: '#b82525', padding: '6px 12px', borderRadius: '8px', fontWeight: 700, fontSize: '13px', cursor: 'pointer', minWidth: '72px', textAlign: 'center' }}
                       onMouseEnter={e => { e.currentTarget.style.background = 'rgba(184,37,37,0.06)'; }}
                       onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; }}
                     >
