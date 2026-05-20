@@ -88,11 +88,42 @@ export default function AdminDashboard(){
   }, [items, cat])
 
   return (
-    <div className="min-h-screen bg-[#fafaf8]">
-      <AdminNavbar page="dashboard" onGoHome={() => { window.history.pushState({}, '', '/'); window.dispatchEvent(new PopStateEvent('popstate')) }} onGoComments={() => { window.history.pushState({}, '', '/admin/comments'); window.dispatchEvent(new PopStateEvent('popstate')) }} />
+    <>
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600;700&display=swap');
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'DM Sans', sans-serif; }
+        .lol-root { min-height: 100vh; background: #faf7f2; background-image: radial-gradient(ellipse 70% 40% at 50% 0%, rgba(201,144,58,0.07) 0%, transparent 60%), radial-gradient(ellipse 50% 30% at 90% 10%, rgba(180,110,30,0.05) 0%, transparent 50%); }
+        .lol-header { position: sticky; top: 0; z-index: 50; background: rgba(250,247,242,0.92); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-bottom: 1px solid rgba(201,144,58,0.15); }
+        .lol-card { background: #ffffff; border: 1px solid #f0e8dc; border-radius: 16px; overflow: hidden; }
+        .lol-chip { padding: 8px 15px; border-radius: 30px; font-size: 12px; font-weight: 500; cursor: pointer; transition: all 0.2s ease; white-space: nowrap; border: 1px solid transparent; font-family: 'DM Sans', sans-serif; letter-spacing: 0.02em; display: inline-flex; align-items: center; gap: 5px; }
+        .lol-chip-active { background: linear-gradient(135deg, #c9903a, #e8b86d); color: #fff; font-weight: 600; box-shadow: 0 4px 14px rgba(201,144,58,0.3); border-color: transparent; }
+        .lol-chip-inactive { background: #f5f0e8; color: #9a8878; border-color: #ede5d8; }
+        .lol-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+        @media (min-width: 1024px) { .lol-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+      `}</style>
 
-      {/* Main content */}
-      <main className="max-w-7xl mx-auto px-3 sm:px-6 py-4 sm:py-6">
+      <div className="lol-root">
+        <header className="lol-header" style={{ padding: '14px 20px' }}>
+          <div style={{ maxWidth: '1100px', margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '11px' }}>
+              <div style={{ width: '36px', height: '36px', background: 'linear-gradient(135deg, #c9903a, #a06820)', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 4px 12px rgba(201,144,58,0.3)' }}>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1" /><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z" /><line x1="6" y1="2" x2="6" y2="4" /><line x1="10" y1="2" x2="10" y2="4" /><line x1="14" y1="2" x2="14" y2="4" /></svg>
+              </div>
+              <div>
+                <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '17px', fontWeight: '600', color: '#1e0f04' }}>LOL Café Admin</div>
+                <div style={{ fontSize: '10px', color: '#c4b8a8', letterSpacing: '0.1em', textTransform: 'uppercase' }}>Manage Menu</div>
+              </div>
+            </div>
+
+            <div style={{ display: 'flex', gap: '8px' }}>
+              <button onClick={() => { window.history.pushState({}, '', '/'); window.dispatchEvent(new PopStateEvent('popstate')) }} style={{ background: '#f5f0e8', border: '1px solid #ede5d8', color: '#9a8878', borderRadius: '20px', padding: '7px 16px', fontSize: '12px' }}>Back to menu</button>
+              <button onClick={checkComments} style={{ background: 'linear-gradient(135deg, #c9903a, #e8b86d)', border: 'none', color: '#fff', borderRadius: '20px', padding: '7px 18px', fontSize: '12px', fontWeight: 600 }}>Comments</button>
+            </div>
+          </div>
+        </header>
+
+        <main style={{ maxWidth: '1100px', margin: '0 auto', padding: '28px 16px 64px' }}>
         {/* Category filter chips */}
         <div className="flex gap-2 overflow-x-auto no-scrollbar mb-4 pb-1">
           {categories.map(c => (
@@ -119,60 +150,27 @@ export default function AdminDashboard(){
             <p className="text-gray-400 text-sm mb-4">No menu items found</p>
           </div>
         ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 sm:gap-4">
+          <div className="lol-grid">
             {filteredItems.map(it => (
-              <div key={it.id} className="bg-white border border-[#e8e4de] rounded-xl overflow-hidden shadow-subtle">
-                {/* Image */}
-                <div className="relative">
-                  <img src={it.image_url || 'https://via.placeholder.com/200'} alt={it.name} className="w-full h-24 sm:h-32 object-cover bg-[#f0ede8] rounded-t-xl" />
+              <div key={it.id} className="lol-card">
+                <div style={{ position: 'relative', height: '180px', overflow: 'hidden', borderRadius: '16px 16px 0 0' }}>
+                  <img src={it.image_url || 'https://via.placeholder.com/400'} alt={it.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  <div style={{ position: 'absolute', top: '12px', right: '12px', background: 'rgba(255,255,255,0.95)', color: '#9a6020', fontWeight: 700, fontSize: '13px', padding: '4px 11px', borderRadius: '20px' }}>Birr {it.price}</div>
+                  <div style={{ position: 'absolute', top: '12px', left: '12px', background: it.is_available ? 'rgba(220,252,231,0.95)' : 'rgba(254,226,226,0.95)', color: it.is_available ? '#16a34a' : '#dc2626', fontSize: '10px', fontWeight: 700, padding: '3px 10px', borderRadius: '20px', textTransform: 'uppercase' }}>{it.is_available ? 'Available' : 'Sold Out'}</div>
                 </div>
-
-                {/* Content */}
-                <div className="p-2.5 sm:p-3">
-                  <h3 className="text-sm sm:text-base font-medium text-[#1a1a1a] truncate mb-2">
-                    {it.name}
-                  </h3>
-                  
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm sm:text-base font-medium text-[#c77e3a]">
-                      Birr {it.price}
-                    </span>
-                    <span className="bg-[#fdf3e8] text-[#a0621a] text-[9px] sm:text-xs px-2 py-0.5 rounded">
-                      {it.category}
-                    </span>
-                  </div>
-
-                  <div className="flex items-center justify-between">
-                    <span className={`text-[10px] sm:text-xs ${
-                      it.is_available ? 'text-[#3a7a42]' : 'text-[#a32d2d]'
-                    }`}>
-                      {it.is_available ? '● Available' : '● Out of stock'}
-                    </span>
-                    <div className="flex gap-1.5">
-                      <button 
-                        onClick={()=>{ 
-                          setForm({name:it.name, description:it.description||'', price:it.price, category:it.category||'Breakfast', image_url:it.image_url||'', is_available:!!it.is_available})
-                          setEditingId(it.id)
-                          setOpen(true)
-                        }} 
-                        className="bg-[#e8f0fb] text-[#2563b8] rounded px-2 py-1 text-[10px] sm:text-xs font-medium hover:opacity-90 transition-opacity"
-                      >
-                        Edit
-                      </button>
-                      <button 
-                        onClick={()=>del(it.id)} 
-                        className="bg-[#fbe8e8] text-[#b82525] rounded px-2 py-1 text-[10px] sm:text-xs font-medium hover:opacity-90 transition-opacity"
-                      >
-                        Delete
-                      </button>
-                    </div>
+                <div style={{ padding: '16px 18px 18px' }}>
+                  <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '17px', fontWeight: 600, color: '#2c1a0a', marginBottom: '6px' }}>{it.name}</h3>
+                  <p style={{ fontSize: '12px', color: '#9a8878', lineHeight: 1.6, marginBottom: '12px', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{it.description}</p>
+                  <div style={{ display: 'flex', gap: '8px' }}>
+                    <button onClick={()=>{ setForm({name:it.name, description:it.description||'', price:it.price, category:it.category||'Breakfast', image_url:it.image_url||'', is_available:!!it.is_available}); setEditingId(it.id); setOpen(true) }} style={{ flex: 1, background: '#f5f0e8', border: '1px solid #ede5d8', color: '#6b3e26', padding: '10px', borderRadius: '10px' }}>Edit</button>
+                    <button onClick={()=>del(it.id)} style={{ flex: 1, background: '#fde8e8', border: '1px solid #f0bcbc', color: '#a32d2d', padding: '10px', borderRadius: '10px' }}>Delete</button>
                   </div>
                 </div>
               </div>
             ))}
           </div>
         )}
-      </main>
+        </main>
 
       {/* Modal */}
       <Modal open={open} onClose={()=>{ setOpen(false); setEditingId(null); }}>
