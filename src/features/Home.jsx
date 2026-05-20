@@ -340,6 +340,18 @@ export default function Home() {
           0%, 100% { opacity: 1; }
           50% { opacity: 0.5; }
         }
+
+        .lol-grid {
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 20px;
+        }
+
+        @media (min-width: 1024px) {
+          .lol-grid {
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+          }
+        }
       `}</style>
 
       <div className="lol-root">
@@ -591,7 +603,7 @@ export default function Home() {
           )}
 
           {isLoading ? (
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))', gap: '20px' }}>
+            <div className="lol-grid">
               {Array.from({ length: 6 }).map((_, i) => <SkeletonCard key={i} />)}
             </div>
           ) : filtered.length === 0 ? (
@@ -601,7 +613,7 @@ export default function Home() {
               <p style={{ fontSize: '13px', color: '#d4c8b8' }}>Try a different search or category</p>
             </motion.div>
           ) : (
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))', gap: '20px' }}>
+            <div className="lol-grid">
               {filtered.map((item, i) => (
                 <motion.div
                   key={item.id}
