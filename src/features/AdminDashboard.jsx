@@ -274,5 +274,6 @@ export default function AdminDashboard(){
         </form>
       </Modal>
     </div>
+    </>
   )
 }
