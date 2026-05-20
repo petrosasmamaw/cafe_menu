@@ -27,8 +27,17 @@ export default function AdminLogin(){
   }
 
   return (
-    <div className="min-h-screen bg-white flex items-center justify-center px-4">
-      <div className="w-full max-w-md bg-white border border-[#e8e4de] rounded-2xl p-8 shadow-[0_2px_12px_rgba(0,0,0,0.06)]">
+    <>
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600;700&display=swap');
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'DM Sans', sans-serif; }
+        .lol-root { min-height: 100vh; background: #faf7f2; display: flex; align-items: center; justify-content: center; padding: 24px; }
+        .lol-card { background: #ffffff; border: 1px solid #f0e8dc; border-radius: 16px; overflow: hidden; }
+      `}</style>
+
+      <div className="lol-root">
+        <div className="lol-card w-full max-w-md p-8 shadow-[0_2px_12px_rgba(0,0,0,0.06)]">
         {/* Logo */}
         <div className="flex justify-center mb-6">
           <div className="w-9 h-9 bg-[#6b3e26] rounded-lg flex items-center justify-center">
@@ -45,7 +54,7 @@ export default function AdminLogin(){
         {/* Title */}
         <div className="text-center mb-8">
           <h1 className="text-lg font-medium text-[#1a1a1a] mb-1">Sign in</h1>
-          <p className="text-sm text-gray-400">Manage your café</p>
+          <p className="text-sm text-[#c4b8a8]">Manage your café</p>
         </div>
 
         {/* Messages */}
@@ -68,7 +77,7 @@ export default function AdminLogin(){
               value={email}
               onChange={e=>setEmail(e.target.value)}
               placeholder="Email address"
-              className="w-full bg-[#f5f3ef] border border-[#e8e4de] rounded-lg px-4 py-2.5 text-sm text-[#1a1a1a] placeholder-gray-400 focus:ring-2 focus:ring-[#c77e3a]/20"
+              className="w-full bg-[#f5f0e8] border border-[#ede5d8] rounded-lg px-4 py-2.5 text-sm text-[#1a1a1a] placeholder-gray-400 focus:ring-2 focus:ring-[#c9903a]/20"
               required
             />
           </div>
@@ -78,14 +87,14 @@ export default function AdminLogin(){
               value={password}
               onChange={e=>setPassword(e.target.value)}
               placeholder="Password"
-              className="w-full bg-[#f5f3ef] border border-[#e8e4de] rounded-lg px-4 py-2.5 text-sm text-[#1a1a1a] placeholder-gray-400 focus:ring-2 focus:ring-[#c77e3a]/20"
+              className="w-full bg-[#f5f0e8] border border-[#ede5d8] rounded-lg px-4 py-2.5 text-sm text-[#1a1a1a] placeholder-gray-400 focus:ring-2 focus:ring-[#c9903a]/20"
               required
             />
           </div>
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full bg-[#c77e3a] text-white rounded-lg py-2.5 text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
+            className="w-full bg-gradient-to-br from-[#c9903a] to-[#e8b86d] text-white rounded-lg py-2.5 text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
           >
             {isLoading ? 'Signing in...' : 'Sign in'}
           </button>
@@ -93,11 +102,12 @@ export default function AdminLogin(){
 
         {/* Back link */}
         <div className="mt-6 text-center">
-          <a href="/" className="text-[#c77e3a] text-sm hover:opacity-80">
+          <a href="/" className="text-[#c9903a] text-sm hover:opacity-80">
             ← Back to menu
           </a>
         </div>
+        </div>
       </div>
-    </div>
+    </>
   )
 }
